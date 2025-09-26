@@ -1,0 +1,19 @@
+{
+  "createdAt": "2025-08-27T15:52:52.880Z",
+  "updatedAt": "2025-08-27T18:50:09.000Z",
+  "id": "Gf6FE2EUvuTsJlWA",
+  "name": "Social media automation",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "a178879d-98bb-4c35-816e-acd5d1d37cf4",
+  "triggerCount": 0,
+  "tags": []
+}
