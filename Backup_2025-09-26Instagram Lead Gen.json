@@ -1,0 +1,312 @@
+{
+  "createdAt": "2025-08-13T15:21:31.099Z",
+  "updatedAt": "2025-08-25T08:11:48.000Z",
+  "id": "MTz2MszdufBKMODp",
+  "name": "Instagram Lead Gen",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "who are you looking for",
+        "height": 256,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "786e5cb1-c17e-4cf9-9f81-44b5d2906bc1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Scarching.....",
+        "height": 256,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "998d44d9-a627-4274-9e43-5c0baaaffa56",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Gether Results",
+        "height": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "e64df260-7f09-426b-9730-98e84a87b008",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Structure output",
+        "height": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "47c1bcbd-cb0f-4c85-88df-ebd9f4673838",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Store results",
+        "height": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        448,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "68ea98fc-81cd-4862-95c9-f7aa600c152a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "formTitle": "Instagram leads scraper",
+        "formDescription": "Get all leads from Instagram to Airtabel",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "who are you looking for"
+            },
+            {
+              "fieldLabel": "Location"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        160
+      ],
+      "id": "172982b6-ed8a-4e8a-90c6-b55de1a372ca",
+      "name": "On form submission",
+      "webhookId": "72df9858-6fbf-4989-93cd-e755424d8846"
+    },
+    {
+      "parameters": {
+        "url": " https://api.apify.com/v2/acts/apify~google-search-scraper/run-sync-get-dataset-items?token=",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"focusOnPaidAds\": false,\n    \"forceExactMatch\": false,\n    \"includeIcons\": false,\n    \"includeUnfilteredResults\": false,\n    \"maxPagesPerQuery\": 3,\n    \"mobileResults\": false,\n    \"queries\": \"site:instagram.com + {{ $json['who are you looking for'] }}\",\n    \"resultsPerPage\": 100,\n    \"saveHtml\": false,\n    \"saveHtmlToKeyValueStore\": true\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -304,
+        160
+      ],
+      "id": "6e4b994c-2d3b-466b-afc5-4ccdd6cbfada",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        160
+      ],
+      "id": "fa2de8d8-0782-4478-ad4d-f660711bc59b",
+      "name": "Wait",
+      "webhookId": "d73f71ba-4cbe-4234-bf23-0de3d30cf188"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Helper function to parse follower counts like \"22.7K\", \"1.2M\", etc.\nconst parseFollowers = (raw) => {\n  if (!raw || typeof raw !== 'string') return null;\n\n  const clean = raw.trim().toUpperCase();\n  const match = clean.match(/([\\d.,]+)\\s*([KMB]?)/);\n\n  if (!match) return null;\n\n  let number = parseFloat(match[1].replace(',', ''));\n  const multiplier = match[2];\n\n  if (isNaN(number)) return null;\n\n  switch (multiplier) {\n    case 'K': return Math.round(number * 1000);\n    case 'M': return Math.round(number * 1000000);\n    case 'B': return Math.round(number * 1000000000);\n    default: return Math.round(number);\n  }\n};\n\n// Main processing\nconst creators = $json[\"organicResults\"];\n\nreturn creators.map((creator) => {\n  const titleSplit = creator.title.split(\"(@\");\n  const name = titleSplit[0]?.trim() || \"Unknown\";\n  const handle = titleSplit[1]?.split(\")\")[0] || \"\";\n\n  const rawFollowers = creator.followersAmount || \"\";\n  const cleanFollowers = parseFollowers(rawFollowers);\n\n  return {\n    json: {\n      Name: name,\n      InstagramHandle: handle,\n      ProfileURL: creator.url || \"\",\n      Description: creator.description || \"\",\n      Followers: cleanFollowers,\n      ChannelName: creator.channelName || \"\",\n      PostType: creator.type || \"\",\n      Position: creator.position || null,\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        160
+      ],
+      "id": "f89239ae-b285-42c6-940f-6582643b72b6",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appSWM5k3RClAOJ32",
+          "mode": "list",
+          "cachedResultName": "instagram lead",
+          "cachedResultUrl": "https://airtable.com/appSWM5k3RClAOJ32"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl6VEBCmIoolOAjP",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appSWM5k3RClAOJ32/tbl6VEBCmIoolOAjP"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Follower": "={{ $json.Followers }}",
+            "Name": "={{ $json.InstagramHandle }}",
+            "id": "Name",
+            "Instagram": "={{ $json.ProfileURL }}",
+            "Discription": "={{ $json.Description }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Instagram",
+              "displayName": "Instagram",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Discription",
+              "displayName": "Discription",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Follower",
+              "displayName": "Follower",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        496,
+        160
+      ],
+      "id": "29808e88-7255-42a1-958f-fa25b61b7793",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "rSNIhezu0OsOBSGS",
+          "name": "Airtable Account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "92e3e052-584b-43f5-ba63-f26ecc502a1c",
+  "triggerCount": 0,
+  "tags": []
+}
