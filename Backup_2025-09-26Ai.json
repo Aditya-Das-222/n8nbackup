@@ -1,0 +1,26 @@
+{
+  "createdAt": "2025-09-23T10:31:16.098Z",
+  "updatedAt": "2025-09-24T09:10:40.000Z",
+  "id": "HzaDn7CQVxdpjoMF",
+  "name": "Ai",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "639739e3-506e-46d1-8d0a-a6e5fe37eaaa",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-09-23T09:38:10.343Z",
+      "updatedAt": "2025-09-23T09:38:10.343Z",
+      "id": "L2HK8mJk4bl08yU2",
+      "name": "Email Outreach"
+    }
+  ]
+}
