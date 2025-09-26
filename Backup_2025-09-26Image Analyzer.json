@@ -1,0 +1,198 @@
+{
+  "createdAt": "2025-08-17T19:42:28.385Z",
+  "updatedAt": "2025-09-08T19:45:30.000Z",
+  "id": "pa0Cm7pnBbXY3VGV",
+  "name": "Image Analyzer",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\nADD Prompt\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        -208
+      ],
+      "id": "e8968039-6116-41a4-9ace-293d04800057",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -208
+      ],
+      "id": "382b5a4b-f6ed-48c4-98a8-32030ed41b83",
+      "name": "Telegram Trigger",
+      "webhookId": "3cb7b2c5-4ebe-47a5-990d-1d1b0ccb6d05",
+      "credentials": {
+        "telegramApi": {
+          "id": "uK2pnp48djp1kdZO",
+          "name": "Rendom Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        784,
+        -208
+      ],
+      "id": "23e18848-eae2-47e7-b326-353713942140",
+      "name": "Send a text message",
+      "webhookId": "ea33ab66-5046-4ecd-a53f-fdd35c55d046",
+      "credentials": {
+        "telegramApi": {
+          "id": "uK2pnp48djp1kdZO",
+          "name": "Rendom Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo[1].file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -208
+      ],
+      "id": "8eac7c6c-07b1-40e3-b059-0f6815656514",
+      "name": "Get a file",
+      "webhookId": "91cde51c-7263-4dff-bd24-3d8294f339d7",
+      "credentials": {
+        "telegramApi": {
+          "id": "uK2pnp48djp1kdZO",
+          "name": "Rendom Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Function to correct MIME type\nconst item = $input.first();\n\n// Check if we have binary data\nif (item.binary && Object.keys(item.binary).length > 0) {\n  const binaryKey = Object.keys(item.binary)[0];\n  const binaryData = item.binary[binaryKey];\n\n  // Determine correct MIME type based on file extension\n  let correctMimeType = 'image/jpeg'; // Default\n  if (binaryData.fileName) {\n    const extension = binaryData.fileName.split('.').pop().toLowerCase();\n    if (extension === 'png') correctMimeType = 'image/png';\n    if (extension === 'jpg' || extension === 'jpeg') correctMimeType = 'image/jpeg';\n  }\n\n  // Update the MIME type\n  item.binary[binaryKey].mimeType = correctMimeType;\n}\n\nreturn item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -208
+      ],
+      "id": "01616999-0518-4801-8f35-fb39a40a71e0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        0
+      ],
+      "id": "713c7e97-a5b1-4927-bb6d-0b7a48b1c279",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "8fce81bb-618f-449c-820d-bbeafd229cb8",
+  "triggerCount": 1,
+  "tags": []
+}
