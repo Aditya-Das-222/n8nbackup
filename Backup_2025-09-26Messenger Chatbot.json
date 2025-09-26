@@ -1,0 +1,325 @@
+{
+  "createdAt": "2025-08-11T15:52:55.741Z",
+  "updatedAt": "2025-09-09T09:39:26.000Z",
+  "id": "AmlwitvBWcrPlu2F",
+  "name": "Messenger Chatbot",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User Message: \"{{ $json.body.entry[0].messaging[0].message.text }}\"\n\nReply in a human, natural tone. Keep it short and helpful.\n\nalways give answer from soogle sheet tool . here have my all info.\n",
+        "options": {
+          "systemMessage": "=You are a friendly, intelligent Facebook Messenger chatbot designed to reply like a real human. Your goal is to understand the user's intent and reply in a natural, helpful, and empathetic tone.\n\nGuidelines:\nBe short and conversational (not robotic).\n\nAlways reply in a friendly tone.\n\nIf you don't understand something, politely ask for clarification.\n\nDo not mention that you are an AI or chatbot.\n\nIf the message is a greeting, greet back warmly.\n\nIf someone asks a question, answer it directly and helpfully.\n\nIf it's small talk (e.g. how are you?), reply naturally.\n\nIf the user is angry or confused, respond empathetically and offer help.\n\nUse emojis occasionally, like a human would.\n\nUse Bengali if the user types in Bengali; otherwise, reply in English.\n\nYou are replying on behalf of a Ai junction .If the message is related to services, kindly ask them what they need help with.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -976,
+        -176
+      ],
+      "id": "f7cbe781-bdc0-4cb5-95a9-7dd5c6bd3269",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1072,
+        16
+      ],
+      "id": "0bf2ab08-98bd-42e6-9fcb-6a5a59a87112",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "httpMethod": [
+          "GET"
+        ],
+        "path": "1d64d7dd-9b5c-4f51-b57b-ff69d62812a0",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1216,
+        -256
+      ],
+      "id": "27487866-d8fb-4cb5-9939-cce628f7a2e0",
+      "name": "Webhook",
+      "webhookId": "1d64d7dd-9b5c-4f51-b57b-ff69d62812a0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8e0c507f-4ffd-442a-803e-36edae90a062",
+              "leftValue": "={{ $json.query['hub.mode'] }}",
+              "rightValue": "subscribe",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "99f20628-6fcc-420b-b782-625cec013d55",
+              "leftValue": "={{ $json.query['hub.verify_token'] }}",
+              "rightValue": "auto",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -944,
+        -384
+      ],
+      "id": "31b05fd2-0508-4f34-9d7b-4eed7a401a62",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.query['hub.challenge'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -640,
+        -480
+      ],
+      "id": "48ec2357-425d-4944-9670-2a5923783bd2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -640,
+        -320
+      ],
+      "id": "fc64c1ac-4f67-4305-8d8f-09923b1dc75b",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -624,
+        -176
+      ],
+      "id": "a41c6466-2de3-4af5-9ebb-a8bbc9eb6e9f",
+      "name": "Wait",
+      "webhookId": "0c5f5394-ab91-4c3b-a744-a0511a6703ea"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v2.6/{{ $('Webhook').item.json.body.entry[0].messaging[0].recipient.id }}/messages?access_token=EAA75aZA5tSdABPMZARZA1fZAd8ZBxtLluSavZANvkI6mZAkZBc3FrKZAeWDM1AZAnk1T8CjIAhfJVfhCsCBqt3sYGk6n0UZAWZAzdyySh9lZBsE3SllxPsiWKukuPVx2LRvnepBZCPq5vHDrHgAnTOf915cnLZA1ri5YZAD5RXFpvujqHAhnEr5OLDj3cqSK8xhUUHUurnpkyz4to4yyRAZDZD",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"id\": \"{{ $('Webhook').item.json.body.entry[0].messaging[0].sender.id }}\"\n  },\n  \"messaging_type\": \"RESPONSE\",\n  \"message\": {\n    \"text\": \"{{ $('AI Agent').item.json.output }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        -176
+      ],
+      "id": "fea3d120-808f-4741-8990-5c1a1fce549a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "100"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -864,
+        16
+      ],
+      "id": "e6f8715a-6f7f-4bb1-bee2-efc45dec4147",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ufvQ4J8_UYx1KdSMLw4VZe_rF76fEXD0DFu6gX3Mvzo",
+          "mode": "list",
+          "cachedResultName": "ai junction",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ufvQ4J8_UYx1KdSMLw4VZe_rF76fEXD0DFu6gX3Mvzo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ufvQ4J8_UYx1KdSMLw4VZe_rF76fEXD0DFu6gX3Mvzo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -624,
+        16
+      ],
+      "id": "64dc6f84-4c6a-4af3-9691-399119f026a2",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LqP8MSiwVRVCSrSN",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a01e09f4-4aac-4026-8f7f-707cab4e594f",
+  "triggerCount": 1,
+  "tags": []
+}
