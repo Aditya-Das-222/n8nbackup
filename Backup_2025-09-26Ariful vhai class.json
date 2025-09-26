@@ -1,0 +1,90 @@
+{
+  "createdAt": "2025-08-31T07:03:28.126Z",
+  "updatedAt": "2025-09-03T18:11:48.000Z",
+  "id": "zjNs7HsHEAWE1ex8",
+  "name": "Ariful vhai class",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        80
+      ],
+      "id": "dfafd2e9-d635-4ff3-a8f1-8a48997b34cc",
+      "name": "When chat message received",
+      "webhookId": "8744171c-d80d-4053-af91-d49753ca01e7"
+    },
+    {
+      "parameters": {
+        "resource": "attribute",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.sendInBlue",
+      "typeVersion": 1,
+      "position": [
+        592,
+        128
+      ],
+      "id": "13f7bc80-49b9-4abd-8d8a-c2ec3ede59bb",
+      "name": "Create an attribute"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.openWeatherMap",
+      "typeVersion": 1,
+      "position": [
+        880,
+        112
+      ],
+      "id": "75536bae-2619-4494-ac3a-03151ff844a3",
+      "name": "OpenWeatherMap",
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "wGhVIcwrNbIqf1CR",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Create an attribute",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an attribute": {
+      "main": [
+        [
+          {
+            "node": "OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "8c56621f-2b61-4210-baec-7ec5c7368c6c",
+  "triggerCount": 0,
+  "tags": []
+}
