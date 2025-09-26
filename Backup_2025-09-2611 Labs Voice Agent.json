@@ -1,0 +1,207 @@
+{
+  "createdAt": "2025-08-08T10:10:32.466Z",
+  "updatedAt": "2025-08-11T19:07:35.000Z",
+  "id": "VOp7vZvIjOFcusWU",
+  "name": "11 Labs Voice Agent",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=\nYou are an AI agent that manages information about AI Junction — an all-in-one AI platform for learning, earning, and connecting. \nYour job is to answer incoming voice queries from users, guide them through the platform, and help them understand its features clearly.\n\nWhenever the user asks anything, use the platform info and features to answer confidently and conversationally.\n\n🧠 Core Process:\n\n1. **Understand the message**: Identify what the user is asking about (e.g. courses, earning, uploading, jobs).\n2. **Refer to platform info**: Use your knowledge of AI Junction's structure to explain the relevant part of the platform.\n3. **Keep it simple**: Respond like a human voice assistant — 1 to 3 clear sentences max.\n4. **Focus on benefits**: Help the user see how AI Junction can solve their problem or benefit them.\n5. **Offer support**: If the user sounds confused, offer to guide them step-by-step or suggest where to start (e.g. Learn, Jobs, Explore).\n6. **Confirm understanding**: End the conversation politely by confirming if the user got what they needed.\n\n✅ Use the following key info when answering:\n\n- AI Junction helps people **learn AI**, **create courses/eBooks**, **earn from views**, **find AI jobs**, and **explore new tools/newsletters**.\n- It's like a mix of Coursera, Gumroad, LinkedIn, and Product Hunt — but only for AI.\n- Users can upload their own AI content and get visibility + earnings from the community.\n- The platform has a **home feed**, **learning section**, **job board**, **explore tab**, and **profile system**.\n\n🎯 Always sound helpful, positive, and simple — like you're talking to someone new to AI.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "008db13c-8c7e-43f6-ba14-aef1bde7f298",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        272
+      ],
+      "id": "f431dac9-0d53-45c1-a136-a1b19f3b16b4",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ufvQ4J8_UYx1KdSMLw4VZe_rF76fEXD0DFu6gX3Mvzo",
+          "mode": "list",
+          "cachedResultName": "ai junction",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ufvQ4J8_UYx1KdSMLw4VZe_rF76fEXD0DFu6gX3Mvzo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ufvQ4J8_UYx1KdSMLw4VZe_rF76fEXD0DFu6gX3Mvzo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        320,
+        256
+      ],
+      "id": "a154c1c9-1855-47cb-8785-b773c3fbe222",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LqP8MSiwVRVCSrSN",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aditya.das.own@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aditya.das.own@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        272
+      ],
+      "id": "007aecaf-5ea2-477c-ba33-3a4ae8db1f4a",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YnnCsnPzQZ182Gsv",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai junction",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "3d81d02b-6004-499e-b870-cf4848afed9b",
+      "name": "Webhook",
+      "webhookId": "8a249222-8b86-48e6-93e1-8a82c264b31e"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        688,
+        0
+      ],
+      "id": "2fe8cebd-804a-43c1-b88d-aee325e5821f",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "b88bde18-353a-4e16-8b30-90d8a3a76573",
+  "triggerCount": 0,
+  "tags": []
+}
