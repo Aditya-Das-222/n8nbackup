@@ -1,0 +1,375 @@
+{
+  "createdAt": "2025-08-25T13:16:17.226Z",
+  "updatedAt": "2025-08-25T13:16:33.000Z",
+  "id": "TGJ5n5qNPabYg1mU",
+  "name": "Viral Content Idea Generator_ Sub Agent - Jono Catliff",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "instagram_niche"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1072,
+        256
+      ],
+      "id": "80a3d059-c075-4c68-8176-42b52668dcf6",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\n\nconst result = [];\n\nfor (const item of $input.all()) {\n  const topPosts = item.json.topPosts;\n\n  if (Array.isArray(topPosts) && topPosts.length > 0) {\n    const filteredPosts = topPosts.filter(post => post.commentsCount > 30);\n\n    for (const post of filteredPosts) {\n      result.push({\n        json: {\n          type: post.type || null,\n          caption: post.caption || null,\n          url: post.url || null,\n          commentsCount: post.commentsCount || 0,\n          likesCount: post.likesCount || 0,\n        }\n      });\n    }\n  }\n}\n\nreturn result;\n\n\n\n//return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        256
+      ],
+      "id": "6c5f88af-f674-411c-bcfd-e6e20a71f2df",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -176,
+        256
+      ],
+      "id": "253094c8-9e04-4940-bfdb-a199cf0abbe2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        256
+      ],
+      "id": "99d824e4-816f-40d5-aa1e-2887934dd3c4",
+      "name": "Wait",
+      "webhookId": "545686eb-8d58-4795-b0a5-de969ca86241"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "17763857-d464-42c9-b413-51dde60dc69a",
+              "name": "Ideas_generated",
+              "value": "=We have {{ $json.url.length }} Viral Ideas generated\n\nCheck Here https://docs.google.com/spreadsheets/d/1RdqhTPRVuXDOHxPuXqctT315-3orQm0UYtVlMbYsu2w/edit?gid=0#gid=0",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        64
+      ],
+      "id": "97b69bd1-b54c-4aa4-a7f7-b4552ff30f95",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "url"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        48,
+        64
+      ],
+      "id": "4b933c4e-60d7-48f2-bfa4-c41f84ea280e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "10UeicaaQEq4MX4TAHZQZkg4FaLrIZRiClyDY_hdi-1Q",
+          "mode": "list",
+          "cachedResultName": "Viral Contents Instagram",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10UeicaaQEq4MX4TAHZQZkg4FaLrIZRiClyDY_hdi-1Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RdqhTPRVuXDOHxPuXqctT315-3orQm0UYtVlMbYsu2w/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "url": "={{ $json.url }}",
+            "caption": "={{ $json.caption }}",
+            "commentsCount": "={{ $json.commentsCount }}",
+            "likesCount": "={{ $json.likesCount }}",
+            "type": "={{ $json.type }}",
+            "niche": "={{ $('When Executed by Another Workflow').first().json.instagram_niche }}"
+          },
+          "matchingColumns": [
+            "url"
+          ],
+          "schema": [
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "commentsCount",
+              "displayName": "commentsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "likesCount",
+              "displayName": "likesCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "niche",
+              "displayName": "niche",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        48,
+        256
+      ],
+      "id": "3109fd7a-c411-41cb-a6b4-0918d56d15ff",
+      "name": "Viral Contents IG"
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        256
+      ],
+      "id": "f831c339-5a1d-48eb-8dae-62799ccde88a",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"addParentData\": false,\n  \"enhanceUserSearchWithFacebookPage\": false,\n  \"isUserReelFeedURL\": false,\n  \"isUserTaggedFeedURL\": false,\n  \"onlyPostsNewerThan\": \"7 days\",\n  \"resultsLimit\": 1,\n  \"resultsType\": \"posts\",\n  \"search\": \"{{ $json.instagram_niche }}\",\n  \"searchLimit\": 5,\n  \"searchType\": \"hashtag\"\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -848,
+        256
+      ],
+      "id": "33375482-6e4f-47c4-ad07-0ce6a497ee2c",
+      "name": "Run Instagram Scraper: Sync"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Run Instagram Scraper: Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Viral Contents IG",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Viral Contents IG": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Instagram Scraper: Sync": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "instagram_niche": "AI"
+        }
+      }
+    ]
+  },
+  "versionId": "f0801a7d-dec4-4629-a9f6-fd21f4b8be7f",
+  "triggerCount": 0,
+  "tags": []
+}
