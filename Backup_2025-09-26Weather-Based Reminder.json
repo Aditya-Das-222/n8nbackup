@@ -1,0 +1,117 @@
+{
+  "createdAt": "2025-08-17T19:42:01.118Z",
+  "updatedAt": "2025-08-19T08:07:45.000Z",
+  "id": "ixonF56Pery4Otmi",
+  "name": "Weather-Based Reminder",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        16
+      ],
+      "id": "b17528c4-694b-4611-b6b0-5826515ee904",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -176
+      ],
+      "id": "2606e444-bd68-4c4d-92c9-2fd85cc2f7b9",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        -96
+      ],
+      "id": "493c0c43-121e-4194-8f5b-dd28e9c23c8c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "get"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        -96
+      ],
+      "id": "26ebfa4b-5b3b-430a-b4dd-e379a089c06c",
+      "name": "Get a message",
+      "webhookId": "d338e097-b3fe-4fe4-8d96-d3828587f5f0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "00627edb-7165-4a3d-a932-1c61abd472b3",
+  "triggerCount": 0,
+  "tags": []
+}
