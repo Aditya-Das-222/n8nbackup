@@ -1,0 +1,334 @@
+{
+  "createdAt": "2025-08-02T14:09:17.413Z",
+  "updatedAt": "2025-08-26T07:59:12.000Z",
+  "id": "eUm3uUX0KomviEFP",
+  "name": "SEO Agent ( SaaS )",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "SEO alalyzer",
+        "formDescription": "Enter your website ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Website"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -384,
+        256
+      ],
+      "id": "918ad531-e66a-40b9-9afb-142c4d5d65ba",
+      "name": "On form submission",
+      "webhookId": "a1c3e7d1-8798-4efd-ad14-71714b186b63"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.Website }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        256
+      ],
+      "id": "2cf04091-6c9a-4634-9094-7a78da0b03ad",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        32,
+        224
+      ],
+      "id": "3396dcf6-3843-46fa-9bfc-a46c2ce5dcc6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "aditya.das.own@gmail.com",
+        "subject": "={{ $json.output.Subject }}",
+        "emailType": "text",
+        "message": "={{ $json.output.Body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        224
+      ],
+      "id": "960fb806-f62c-413f-87ef-cc940797dac1",
+      "name": "Send a message",
+      "webhookId": "13606b7d-b957-4c9d-b3d0-78d84a0ee98d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        368,
+        224
+      ],
+      "id": "5c76503c-3904-4a28-946b-123f930880b7",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "output"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        528,
+        224
+      ],
+      "id": "ebf3ef9c-540a-4fe1-9aa0-1958980ba67d",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I have got 2 responses from two different AI tool. 1 is from metadata analysis, another is from content data analysis. Now act as an SU expert and analyze both of the result and then give me a short but effective. Message that I can send to prospect e-mail and so that I can get the SEO job. So it should be short but effective and also mention their problem in a way that they cannot deny or they cannot deny my offer for SEO services. My name is ( your name )  .I am an SEO expert.\n\nMetadata: {{ $json.output[0] }}\n\nContent data: {{ $json.output[1] }}\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        704,
+        224
+      ],
+      "id": "bb44f5d0-1a3e-4b37-a4b0-bd723911dac8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"Subject\": \"Write the subject here\",\n  \"Body\": \"Write the email body here\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        976,
+        432
+      ],
+      "id": "b8f0834c-fc32-4f5f-9963-0d2a07df9f04",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are an seo analyzer . i have attached website website HTML data. analyze this website suggestion meta data imporvement \n\n {{ $json.data }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        16
+      ],
+      "id": "95bdd430-998d-4f02-9314-fd70cadcfec6",
+      "name": "Meta Data"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are an seo analyzer . i have attached website website HTML data. analyze this website suggestion content imporvement .\n\n {{ $json.data }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        400
+      ],
+      "id": "2a686d35-66a7-4635-a980-8f34735320a6",
+      "name": "Content"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        640,
+        432
+      ],
+      "id": "4272cec4-472a-4265-a435-5fd9bb7971c2",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Meta Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Meta Data",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meta Data": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "779597c0-c40c-4f3b-b69f-4e84566d53d6",
+  "triggerCount": 0,
+  "tags": []
+}
