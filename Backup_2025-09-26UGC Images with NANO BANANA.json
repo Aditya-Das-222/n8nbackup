@@ -1,0 +1,422 @@
+{
+  "createdAt": "2025-08-29T08:06:48.385Z",
+  "updatedAt": "2025-08-30T08:32:08.000Z",
+  "id": "nTo2IrA5OKaCM7db",
+  "name": "UGC Images with NANO BANANA",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "UCG Image pro",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Add Image ",
+              "fieldType": "file"
+            },
+            {
+              "fieldLabel": "Propmt ",
+              "placeholder": "write your pormpt here"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        96,
+        80
+      ],
+      "id": "84a5cfb6-ac58-4ece-8083-93e7448c246d",
+      "name": "On form submission",
+      "webhookId": "6c895c7a-6f88-4a65-b1f0-f1f60f7d9915"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgbb.com/1/upload?key=040aa5f71ef46c32f1e3a5c9f6ab01c4",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "Add_Image_"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        80
+      ],
+      "id": "009b0e49-092b-4da7-abc8-06b7880bae65",
+      "name": "upload image"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Primary Objective: Create 1 image prompt following system guidelines\nAccuracy Requirements:\n\nDepict reference image as accurately as possible\nEnsure all text elements are reproduced precisely\nMaintain visual fidelity to original\n\n\nInput Sources:\n\nUser Instructions:{{ $('On form submission').item.json['Propmt '] }}\nReference Image Description: {{ $json.content }}\nAspect Ratio: User's preferred ratio (infer from message; default to vertical if unspecified)\n\n\nProcess Steps:\n\nAnalyze user's prompt requirements\nReview reference image description thoroughly\nDetermine appropriate aspect ratio\nUse Think tool to verify output before finalizing\n\n\nOutput: Single, comprehensive image generation prompt that accurately captures all specified elements\n",
+        "options": {
+          "systemMessage": "=Primary Objective: Create 1 image prompt following system guidelines\nAccuracy Requirements:\n\nDepict reference image as accurately as possible\nEnsure all text elements are reproduced precisely\nMaintain visual fidelity to original\n\n\nInput Sources:\n\nUser Instructions:{{ $('On form submission').item.json.Prompt }}\nReference Image Description: {{ $json.content }}\nAspect Ratio: User's preferred ratio (infer from message; default to vertical if unspecified)\n\n\nProcess Steps:\n\nAnalyze user's prompt requirements\nReview reference image description thoroughly\nDetermine appropriate aspect ratio\nUse Think tool to verify output before finalizing\n\n\nOutput: Single, comprehensive image generation prompt that accurately captures all specified elements\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        704,
+        80
+      ],
+      "id": "42611f29-28bf-4d36-a4f5-3aae43bfe9a0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        288
+      ],
+      "id": "2f008fcc-399e-499b-828a-52d70ab133c8",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        624,
+        288
+      ],
+      "id": "022540a5-8897-4426-b6ff-65eef38c3468",
+      "name": " Gemini ",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "=Image Analysis Instructions\n\nPrimary Task: Analyze the given image to determine if it shows a product, character, or both\nOutput Format: Return analysis in YAML format only (no explanations or additional comments)\nFor Product Images:\n\nbrand_name: Brand name shown or inferable from image\ncolor_scheme: List each prominent color with:\n\nhex: Hex code value\nname: Descriptive color name\n\n\nfont_style: Font characteristics (serif/sans-serif, bold/thin, etc.)\nvisual_description: 1-2 sentences describing what's visible (exclude background)\n\n\nFor Character Images:\n\ncharacter_name: Character name if visible or inferable\ncolor_scheme: List each prominent color with:\n\nhex: Hex code value\nname: Descriptive color name\n\n\noutfit_style: Description of clothing, accessories, or notable features\nvisual_description: 1-2 sentences describing character appearance (exclude background)\n\n\nFor Images Containing Both: Provide both product and character descriptions using the respective fields above\nImportant: Return only the YAML output with no additional text",
+        "imageUrls": "={{ $json.data.url }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        544,
+        80
+      ],
+      "id": "6cedb610-0861-4d46-9546-1f770b80efd4",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://fal.ai/models/fal-ai/nano-banana/edit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "key 97387b69-6b14-4c9e-bd80-61b10d34290d:a3c582a8eecb73079275be1796ff6095"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n     \"prompt\": \"{{ $json.output.replace(/\\\"/g, '\\\\\\\"').replace(/\\n/g, '\\\\n') }} }}\",\n     \"image_urls\": [\n       \"{{ $('upload image').item.json.data.image.url }}\"\n     ]\n   }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        80
+      ],
+      "id": "c935a2a1-8b49-4ffe-bc91-db468bfdfe0a",
+      "name": "Que image"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        80
+      ],
+      "id": "059a255e-14b8-4b48-9346-09294772174f",
+      "name": "Wait",
+      "webhookId": "0a9d41e0-ab97-427c-95d6-d5a76b74d0a4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3aba343b-06f6-49cd-b963-87ebc018098d",
+              "leftValue": "={{ $json.image[0].url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1600,
+        80
+      ],
+      "id": "a78f8311-80fe-4852-a05c-05ba3098dba5",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "={{ json.response_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "key 97387b69-6b14-4c9e-bd80-61b10d34290d:a3c582a8eecb73079275be1796ff6095"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1408,
+        32
+      ],
+      "id": "74036de3-834e-4ce6-8acf-58ea34d51352",
+      "name": "Retrieve image"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.image[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1792,
+        80
+      ],
+      "id": "96f0a9a8-6b74-4a02-9ecb-51d8ee994317",
+      "name": "Get image"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        80
+      ],
+      "id": "aeea8206-34b9-43b2-b87a-15608fb653be",
+      "name": "Wait1",
+      "webhookId": "88273235-7997-40a5-9ca5-192a48d3d0a0"
+    },
+    {
+      "parameters": {
+        "height": 784,
+        "width": 1952,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "e8bbe5ca-5594-496b-a1d7-cc93644042c4",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "upload image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload image": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    " Gemini ": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Que image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Que image": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Retrieve image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve image": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "47d1a2f4-9f58-4c60-9599-cc6d88b37890",
+  "triggerCount": 0,
+  "tags": []
+}
