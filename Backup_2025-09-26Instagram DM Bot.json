@@ -1,0 +1,19 @@
+{
+  "createdAt": "2025-08-13T15:21:34.110Z",
+  "updatedAt": "2025-08-13T15:21:34.110Z",
+  "id": "1Tbxd2mXc0nNK9CC",
+  "name": "Instagram DM Bot",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "665166e7-9288-497f-9f26-aa7a793f3b40",
+  "triggerCount": 0,
+  "tags": []
+}
