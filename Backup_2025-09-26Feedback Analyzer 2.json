@@ -1,0 +1,266 @@
+{
+  "createdAt": "2025-08-20T05:37:58.749Z",
+  "updatedAt": "2025-08-20T06:09:08.000Z",
+  "id": "oWnsonBYHnmVkbyu",
+  "name": "Feedback Analyzer 2",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "free back ",
+        "formDescription": "plz give a proper feedback ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "what is your name"
+            },
+            {
+              "fieldLabel": "type your email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "why join"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        -32
+      ],
+      "id": "a201796f-d0ef-4c64-8cd2-b50aa5b30d0f",
+      "name": "On form submission",
+      "webhookId": "2137da29-3991-4f81-a2b7-869e46d67764"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a lead management specialist.\n\nHere are the details:\n name :{{ $json['what is your name'] }}\n\n Email :{{ $('On form submission').item.json['type your email'] }}\n\nreason : {{ $('On form submission').item.json['why join'] }}\n\nIf they want to be a freelancer, then mark this lead as grade \"A\".\n\n\"Lead Qauality\": \"Enter the grade here\"",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        -64
+      ],
+      "id": "f9e180ac-e276-4d79-bae0-021c8f549ac8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"Lead Qauality\":\"Enter the grade here\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        208
+      ],
+      "id": "e683ea65-27de-4d68-990e-8ce37a66aa2a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5592cde8-2d32-48f3-9bfb-b48d1260a33b",
+              "leftValue": "={{ $json.output['Lead Qauality'] }}",
+              "rightValue": "A",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4c3f4da0-319d-4df3-b4b3-4977595262b9",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        -64
+      ],
+      "id": "3902af3b-2029-4b1d-97b3-7f608eb7ff1f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        208
+      ],
+      "id": "c8017849-388c-4fe4-b421-5d1875e448f5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C09B9JUMMA8",
+          "mode": "list",
+          "cachedResultName": "feedback-"
+        },
+        "text": "=Congratulation \n\nyou've got a new lead\n name : {{ $('On form submission').item.json['what is your name'] }}\n\n Email :{{ $('On form submission').item.json['type your email'] }}\n\nreason : {{ $('On form submission').item.json['why join'] }}\nLead Qauality : {{ $('AI Agent').item.json.output['Lead Qauality'] }} Garde ",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        944,
+        -144
+      ],
+      "id": "5667e6c2-baf5-4c2a-acdd-d8331ed69235",
+      "name": "Send a message",
+      "webhookId": "7a5147c7-b811-4484-a3e1-d5bcee6c292a",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "2ZRGkPRXLTaaHHZP",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['type your email'] }}",
+        "subject": "=Hi {{ $('On form submission').item.json['what is your name'] }} ",
+        "message": "=hi {{ $('On form submission').item.json['what is your name'] }}  we recive your request {{ $('On form submission').item.json['why join'] }}  soon",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        944,
+        64
+      ],
+      "id": "753f3f26-f400-41c4-8ec7-be3316d9d456",
+      "name": "Send a message1",
+      "webhookId": "ea1ab50f-db87-486e-85af-4b782507c8c6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "bf276ecf-0b34-46b2-ba25-bde2c31cb6d5",
+  "triggerCount": 0,
+  "tags": []
+}
