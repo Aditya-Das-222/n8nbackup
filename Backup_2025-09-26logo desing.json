@@ -1,0 +1,19 @@
+{
+  "createdAt": "2025-09-08T14:13:33.498Z",
+  "updatedAt": "2025-09-08T14:13:33.498Z",
+  "id": "kYIgKky2VLI37SL9",
+  "name": "logo desing",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "2b3c1a7f-7780-45f4-99be-af17b1687a34",
+  "triggerCount": 0,
+  "tags": []
+}
