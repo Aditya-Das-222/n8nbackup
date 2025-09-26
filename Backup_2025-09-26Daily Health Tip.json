@@ -1,0 +1,144 @@
+{
+  "createdAt": "2025-08-31T13:03:21.726Z",
+  "updatedAt": "2025-09-01T03:47:34.000Z",
+  "id": "AetXM20nCZAcHait",
+  "name": "Daily Health Tip",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "60acd0df-86d3-41d7-9958-74c2d394d4b4",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional health content writer. \nEach day you must generate exactly ONE health tip. \nKeep it safe, evidence-informed, and practical. \nDo not give diagnosis or prescriptions. \nIf the advice may not fit everyone, add a disclaimer. \nFormat the response EXACTLY like this:\n\n⭕ Today Health Tip \n  [One-paragraph professional health tip, under 100 words]  \n\n⭕ Key Takeaway  \n  [One sentence summary]  \n\n⭕ Note\n [Disclaimer if needed, e.g. \"See a professional if you have a   medical condition.\"]\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e27e880e-713d-4608-a487-55eac32533bf",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        192
+      ],
+      "id": "0ee87ae5-f829-4227-88c4-8bf6967aff6d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "aditya.das.own@gmail.com",
+        "subject": "Daily Health Tips",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "6be48bed-c01d-4d70-8fbf-02b261ce5973",
+      "name": "Send a message",
+      "webhookId": "7070a261-1f30-4108-91bd-b280ec96cb35",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "0c1364d5-312b-47c3-bfde-710c929433a1",
+  "triggerCount": 1,
+  "tags": []
+}
