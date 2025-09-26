@@ -1,0 +1,368 @@
+{
+  "createdAt": "2025-08-30T14:38:45.281Z",
+  "updatedAt": "2025-09-26T13:09:09.000Z",
+  "id": "pxlOrcZSCHEbZkyL",
+  "name": "workflow backup",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        128
+      ],
+      "id": "1e947ca4-1cdc-4195-8405-dfd19cd873df",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        592,
+        128
+      ],
+      "id": "59328216-400f-442a-a4dc-ec1418479713",
+      "name": "Get many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "kVQyemkG9pHkIWvZ",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "53b388e1-4b9f-43d4-996c-da899e395d39",
+              "name": "folderName",
+              "value": "=Backup_{{ $now .format('yyyy-MM-dd') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        128
+      ],
+      "id": "a273d907-8c94-4b7c-a656-e6e9b21215d1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        816,
+        128
+      ],
+      "id": "79279c61-e693-4259-820e-e24bfc27c318",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6226313-74be-44f2-98d5-bbb33df3f4ac",
+              "name": "nodes",
+              "value": "={{ JSON.stringify($json, null, 2) }}\n",
+              "type": "string"
+            },
+            {
+              "id": "2cac9b33-c3a8-4dca-8a0c-df9fc6ff85da",
+              "name": "fileName",
+              "value": "={{ $json.name }}.json",
+              "type": "string"
+            },
+            {
+              "id": "d329ff4f-f5bb-4534-a5b3-b7a7902db1a6",
+              "name": "",
+              "value": "=",
+              "type": "string"
+            },
+            {
+              "id": "c92ac889-4cf3-4049-83a1-c1d234eb0fcb",
+              "name": "createdAt",
+              "value": "=",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        -16
+      ],
+      "id": "759d7741-a50c-4999-a44c-3e5dc5ef00a7",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "nodes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        -16
+      ],
+      "id": "82861593-6207-442d-9b79-65ce5fa15d65",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "Aditya-Das-222",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8nbackup",
+          "mode": "list",
+          "cachedResultName": "n8nbackup",
+          "cachedResultUrl": "https://github.com/Aditya-Das-222/n8nbackup"
+        },
+        "filePath": "={{ $('Edit Fields').item.json.folderName }}{{ $('Edit Fields1').item.json.fileName }}",
+        "binaryData": true,
+        "commitMessage": "={{ $now.setZone('Asia/Dhaka') .format('yyyy-MM-dd')}} Backup completed"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1488,
+        -16
+      ],
+      "id": "400b1489-3183-4939-b28c-f797fdb71c0a",
+      "name": "Create a file",
+      "webhookId": "87d20625-19df-4c71-88ee-339f95170952",
+      "credentials": {
+        "githubApi": {
+          "id": "dn8d72dkhmhbK1dE",
+          "name": "GitHub account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1DSfTbvnaS2N4s_U0pwvohp8-EMtqPz361aFsSl2IqSA",
+          "mode": "list",
+          "cachedResultName": "n8n backup",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DSfTbvnaS2N4s_U0pwvohp8-EMtqPz361aFsSl2IqSA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DSfTbvnaS2N4s_U0pwvohp8-EMtqPz361aFsSl2IqSA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Folder Name": "={{ $('Edit Fields').item.json.folderName }}",
+            "Date & time": "={{ $now.setZone('Asia/Dhaka') .format('yyyy-MM-dd')}}",
+            "File Name": "={{ $('Edit Fields1').item.json.fileName }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date & time",
+              "displayName": "Date & time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Folder Name",
+              "displayName": "Folder Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "File Name",
+              "displayName": "File Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Eorro Msg",
+              "displayName": "Eorro Msg",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1712,
+        64
+      ],
+      "id": "ef2724bf-7edb-41f9-b6d2-c6e2a4693999",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LqP8MSiwVRVCSrSN",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many workflows": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a file": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5766ec94-c6d7-486e-8358-520e570083f1",
+  "triggerCount": 0,
+  "tags": []
+}
