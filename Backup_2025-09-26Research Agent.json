@@ -1,0 +1,405 @@
+{
+  "createdAt": "2025-09-05T10:15:59.593Z",
+  "updatedAt": "2025-09-05T12:17:57.000Z",
+  "id": "i35hisyCRU8FAwPC",
+  "name": "Research Agent",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "invitee.created"
+        ]
+      },
+      "type": "n8n-nodes-base.calendlyTrigger",
+      "typeVersion": 1,
+      "position": [
+        992,
+        -400
+      ],
+      "id": "0abf1774-42f2-4a3d-839d-c7a1c10cee59",
+      "name": "Calendly Trigger",
+      "webhookId": "7bb77af9-e839-4483-b991-a31a9f40328d"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api-f1db6c.stack.tryrelevance.com/latest/studios/72e1ff6a-531a-4651-bccf-278527fb6076/trigger_webhook?project=eb908be8-4291-4cc7-998a-826b03476efa",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"linkedin_url\":\"{{ $json.payload.questions_and_answers[1].answer }}\",\n\"last_x_days\":10\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1152,
+        -400
+      ],
+      "id": "88ef6feb-d2ae-42b1-ad7d-ed8590db9b4f",
+      "name": "Scrape Profiles + Posts - Relevance AI",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "7SCce3uTWw08ao9F",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $node[\"Scrape Profiles + Posts - Relevance AI\"].json;\n\n// Getting posts from output, then fallback to top-level.\nconst posts = (input.output && input.output.last_30_days_posts_transformed) \n  || input.last_30_days_posts_transformed \n  || [];\n\n// Build HTML for each LinkedIn post\nlet postsHTML = '';\nif (Array.isArray(posts)) {\n  posts.forEach(post => {\n    postsHTML += `<div class=\"linkedin-post\" style=\"border:1px solid #ddd; padding:10px; margin-bottom:10px;\">\n      <p>${post.user_post}</p>\n      <p><em>Posted on: ${post.posted}</em></p>\n    </div>`;\n  });\n}\n\n// Return only the generated HTML\nreturn [{ json: { postsHTML } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        -400
+      ],
+      "id": "56c4a4a1-1baa-4356-b669-ff321c3969bb",
+      "name": "Post"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data from the first item\nconst input = $node[\"Scrape Profiles + Posts - Relevance AI\"].json;\n\n// Navigate to the experiences array within the \"output\" object\nconst experiences = input.linkedin_profile_details_data.experiences || [];\n\n// Build the HTML table rows string\nlet htmlRows = '';\nexperiences.forEach(exp => {\n  htmlRows += `<tr>\n      <td>${exp.company}</td>\n      <td>${exp.title}</td>\n      <td>${exp.date_range}</td>\n      <td>${exp.location}</td>\n    </tr>`;\n});\n\n// Return a new object that only contains the experiencesTable field\nreturn [{ json: { experiencesTable: htmlRows } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1488,
+        -400
+      ],
+      "id": "ca07abbc-f6c7-464b-beeb-b3f564dd136c",
+      "name": "Experiences"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data from the first item\nconst input = $node[\"Scrape Profiles + Posts - Relevance AI\"].json;\n\n// Navigate to the educations array in the output object\nconst educations = input.linkedin_profile_details_data.educations || [];\n\n// Build the HTML table rows for education\nlet educationRows = '';\neducations.forEach(edu => {\n  educationRows += `<tr>\n      <td>${edu.school}</td>\n      <td>${edu.degree}</td>\n      <td>${edu.field_of_study}</td>\n    </tr>`;\n});\n\n// Return a new object that only contains the educationTable key\nreturn [{ json: { educationTable: educationRows } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        -400
+      ],
+      "id": "cdd6e007-8689-47a8-8b90-c877d2b953a4",
+      "name": "Education"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Retrieve the JSON from the previous node\nconst input = items[0].json;\n\n// Extract the citations array; default to an empty array if not present\nconst citations = input.citations || [];\n\n// Build an HTML unordered list for the citations\nlet citationsHTML = '<ul>';\nif (Array.isArray(citations)) {\n  citations.forEach(citation => {\n    citationsHTML += `<li><a href=\"${citation}\" target=\"_blank\">${citation}</a></li>`;\n  });\n}\ncitationsHTML += '</ul>';\n\n// Return a new JSON object containing the generated HTML snippet\nreturn [{ json: { citationsHTML } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        -160
+      ],
+      "id": "5bfcf42f-a9fd-4bd8-b1e2-7524286d9abb",
+      "name": "Citations"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Initialize an empty string for reviews HTML\nlet reviewsHTML = '';\n\n// Loop over each item (each review)\nitems.forEach(item => {\n  const review = item.json; // each item is a review object\n  reviewsHTML += `<div class=\"review-card\" style=\"border:1px solid #ddd; padding:10px; margin-bottom:10px;\">`;\n  reviewsHTML += `<h3>${review.reviewHeadline}</h3>`;\n  reviewsHTML += `<p><strong>Rating:</strong> ${review.ratingValue}</p>`;\n  // Format the date nicely; adjust locale as needed\n  const date = new Date(review.datePublished);\n  reviewsHTML += `<p><strong>Date:</strong> ${date.toLocaleDateString()}</p>`;\n  reviewsHTML += `<p>${review.reviewBody}</p>`;\n  if (review.replyMessage) {\n    reviewsHTML += `<p><strong>Reply:</strong> ${review.replyMessage}</p>`;\n  }\n  reviewsHTML += `</div>`;\n});\n\n// Return a new JSON object with the combined reviews HTML\nreturn [{ json: { reviewsHTML } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1360,
+        -160
+      ],
+      "id": "d84e6f04-4470-4b4c-a223-bc97b5ff33f5",
+      "name": "Reviews"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/acts/nikita-sviridenko~trustpilot-reviews-scraper/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"companyDomain\": \"{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_domain }}\",\n    \"count\":5,\n    \"replies\": false,\n    \"sort\": \"recency\",\n    \"stars\": [\n        \"1\",\n        \"2\",\n        \"3\"\n    ],\n    \"startPage\": 1,\n    \"verified\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1152,
+        -160
+      ],
+      "id": "3d0204af-bed5-4fc2-bd71-d1994e567313",
+      "name": "Review scraping",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "7SCce3uTWw08ao9F",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "o1-mini",
+          "mode": "list",
+          "cachedResultName": "O1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are part of the business development team at Miraj-Automation which is an Ai Automation agency. \n\nWhen a new leads book a consultation ? Meeting with Miraj-Automation, your team researches the leads and provides the research + extracted insights to the consultants so they can read it prior to the consult. \n\nYour job is to create the following sections from the research:\n\n- Personal Profile: The personal profile is a one paragraph summary of the person (lead) extracted from researching their LinkedIn profile.\n- Interests: In this section you must identify a few of the leads interests from their most recent LinkedIn posts + their LinkedIn profile. \n- Unique Facts: In this section you must extract at least 2 unique facts about the lead that tells them you've really put time to research who they are. These facts should be things that are unique to the lead and out of the ordinary.\n- Company Profile: The company profile is a one paragraph summary of the company the person represents, extracted from researching their company LinkedIn profile and available information on the web. \n\nYour output must be in HTML, following this format: \n\nPerson Profile (Heading 2)\n[Details]\n\nCompany Profile (Heading 2)\n[Details]\n\nInterests (Heading 2)\n[List of interests in dot point format]\n\nUnique Facts (Heading 2)\n[List of unique facts in dot point format]\n\n\n- Don't wrap the output in ```html``` since the output will go into the middle of another HTML document. Just make sure its in HTML language.\n\nCreate this output for the following research: \n\nLinkedIn Profile Research (in JSON format): \n\n{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.toJsonString() }}\n\nMost Recent LinkedIn Posts: \n{{ $('Post').item.json.postsHTML }}\n\nWeb Research: \n{{ $('Research Company - Perplexity').item.json.choices[0].message.content }}\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1536,
+        -160
+      ],
+      "id": "87e77df9-8446-4311-9c5f-573265e5c025",
+      "name": "Person + Company Profile",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sonar-pro\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a researcher in a business development team. Your job is to find as much research as you can about the prospect company. You must ensure your research is for the correct company and is highly accurate. Your research must always include what the prospect company does.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Find as much info as you can about {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company }} This is their website URL:{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_website }} \"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1840,
+        -400
+      ],
+      "id": "7795a2f2-354d-4586-ac04-4a7300c7a926",
+      "name": "Research Company - Perplexity"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "o1-mini",
+          "mode": "list",
+          "cachedResultName": "O1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are part of the business development team at Miraj-automation which is a AI Automation agency that provides the following services: \n\n[\n- SERVICE 1: Ai Automation: We are expert on building Ai agent and automation to automated any system foe any business.\n- SERVICE 2: Automation coinsaltent: We consuntant business to find out in which system need to automarted. \n\n...\n]\n\nMiraj-automation's consultants are the first point of contact for a new lead. So when a new lead is interested in their solutions, they book a free call with their consultants. The consultants are then responsible for exploring the highest ROI opportunities for AI Automation. \n\nOnce a call is booked, your team does in depth research on the lead so that the consultants can read through it in preparation for the consultation. \n\nAs part of the business development team you are provided with the following research: \n\n- LinkedIn Profile: This is the result of scraping the leads LinkedIn profile. This will give you the leads bio, experiences, education and company description.\n- LinkedIn Posts: This gives you the leads LinkedIn posts over the past 30 days. \n- Company Google Search: This gives you the research found from searching the leads company on Google and their website. \n- Reviews: This gives you the most recent bad reviews the leads company received on TrustPilot. \n\nYour job is to analyse the research and extract following information: \n\n- Pain Points: By looking through the companies negative reviews and also considering their line of business and the leads position in the company, you must identify the biggest pain points the leads company could be facing. \n- Solutions to Pain Points: In this section you must come up with solutions Miraj-automation can offer to solve each of the pain points completely. \n- Highest ROI Opportunities: Considering the info you have about the lead and his company, you must come up with the 5 highest ROI opportunities that Miraj-automationcan offer them. These automations have to be realisitic, yet extremely high ROI. Sort them in order of best opportunity at the top of the list.  \n\nThe insights you extract must be in HTML format as they will be going in the middle of a HTML document. \n\nPlease use the following output format: \n\nOpportunities (Heading 1)\n\nPain Points and Solutions: (Heading 2)\n[Table with 3 columns: \n1. Pain Point: Explains the pain point theyre facing. \n2. Evidence: Explains why we think this is the case. \n3. Solution: Explains the solution to the pain point by Kamexa.\nEach row is a new pain point.]\n\nOpportunities: (Heading 2)\n[5 Highest ROI automation opportunities for the leads company sorted with the best solution at the top. This must be in dotpoint format:\n- Opportunity#1 Name: Details\n- Opportunity#2 Name: Details\n...\n\n- Don't wrap the output in ```html``` since the output will go into the middle of another HTML document.\n\nSomeone just booked a call. Here's the research your team found. Create the output as per the above requirements: \n\n\nLinkedIn Profile Scraped Summary in HTML format: \n{{ $json.message.content }}\n\n\n\n\nWeb Research Results for Leads Company: \n{{ $('Research Company - Perplexity').last().json.choices[0].message.content }} \n\n\nRecent Bad Reviews on TrustPilot for Leads Company in HTML format: \n{{ $('Reviews').item.json.reviewsHTML }}\n\n(if there is no reviews then just create the pain points by considering the leads company and job title)\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1872,
+        -160
+      ],
+      "id": "af8d2886-2d0d-40cd-80ab-a015b8f9ade1",
+      "name": "Pain Points + Solutions",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <title>Consultant Research Report</title>\n    <style>\n      body {\n        font-family: Arial, sans-serif;\n      \n      }\n      h1, h2, h3 {\n        color: #222;\n      }\n      .section {\n        margin-bottom: 40px;\n      }\n      .profile-details p {\n        margin: 5px 0;\n      }\n      table {\n        width: 100%;\n        border-collapse: collapse;\n        margin-top: 10px;\n      }\n      th, td {\n        border: 1px solid #ddd;\n        padding: 8px;\n        vertical-align: top;\n      }\n      th {\n        background-color: #f2f2f2;\n      }\n      .card {\n        border: 1px solid #ddd;\n        padding: 10px;\n        margin-bottom: 10px;\n        border-radius: 4px;\n      }\n      a {\n        color: #1a0dab;\n        text-decoration: none;\n      }\n      a:hover {\n        text-decoration: underline;\n      }\n      /* New styles for the header images container */\n      .header-images {\n        display: flex;\n        margin-bottom: 20px;\n      }\n      .header-images img {\n        width: 50%;\n        height: auto;\n        max-width: 300px;\n\n      }\n    </style>\n  </head>\n  <body>\n        <!-- Header Images -->\n    <div class=\"header-images\">\n      <img src=\"{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.profile_image_url }}\" alt=\"Profile Picture\">\n      <img src=\"{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_logo_url }}\" alt=\"Company Logo\">\n    </div>\n\n    <!-- Analysis & Key Facts -->\n    <div class=\"section\" id=\"analysis\">\n      <h1>Analysis & Key Facts</h1>\n      {{ $('Person + Company Profile').last().json.message.content }}\n      {{ $('Pain Points + Solutions').last().json.message.content }}\n    </div>\n\n      <!-- New Section: Booking Page Info -->\n    <div class=\"section\" id=\"booking-page-info\">\n      <h1>Booking Page Info</h1>\n      <h3>How they found us:</h3>\n      <p>{{ $('Calendly Trigger').item.json.payload.questions_and_answers[0] }}</p>\n      <h3>Info for the meeting:</h3>\n      <p>{{ $('Calendly Trigger').item.json.payload.questions_and_answers[1] }}</p>\n    </div>\n\n    <!-- Detailed Research Report -->\n    <div class=\"section\" id=\"research-report\">\n      <h1>Research Report</h1>\n      \n      <!-- LinkedIn Profile Details -->\n      <div id=\"linkedin-profile\" class=\"profile-details\">\n        <h2>LinkedIn Profile Details</h2>\n        <p><strong>Name:</strong>{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.full_name }}</p>\n        <p><strong>Headline:</strong> {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.headline }}</p>\n        <p><strong>Location:</strong> {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.location }}</p>\n        <p><strong>About:</strong>{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.about }}</p>\n        <p><strong>City:</strong> {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.city }}</p>\n        <p><strong>Company:</strong> {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company }}</p>\n        <p><strong>Company Description:</strong> {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_description }}</p>\n        <p>\n          <strong>Company Website:</strong>\n          <a href=\"{{ $node[\"Scrape Profiles + Posts - Relevance AI\"].json.output.linkedin_profile_details_data.company_website }}\" target=\"_blank\">\n            {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_website }}\n          </a>\n        </p>\n        <p><strong>Industry:</strong>{{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_industry }} </p>\n        <p>\n          <strong>LinkedIn URL:</strong>\n          <a href=\"{{ $node[\"Scrape Profiles + Posts - Relevance AI\"].json.output.linkedin_profile_details_data.linkedin_url }}\" target=\"_blank\">\n           {{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.company_linkedin_url }}\n          </a>\n        </p>\n      </div>\n      \n      <!-- Education -->\n      <div id=\"education\">\n        <h2>Education</h2>\n        <table>\n          <thead>\n            <tr>\n              <th>School</th>\n              <th>Degree</th>\n              <th>Field of Study</th>\n            </tr>\n          </thead>\n          <tbody>\n            {{ $node[\"Education\"].json.educationTable }}\n          </tbody>\n        </table>\n      </div>\n      \n      <!-- Experience -->\n      <div id=\"experience\">\n        <h2>Experience</h2>\n        <table>\n          <thead>\n            <tr>\n              <th>Company</th>\n              <th>Title</th>\n              <th>Date Range</th>\n              <th>Location</th>\n            </tr>\n          </thead>\n          <tbody>\n            {{ $node[\"Experiences\"].json.experiencesTable }}\n          </tbody>\n        </table>\n      </div>\n      \n      <!-- Recent LinkedIn Posts -->\n      <div id=\"linkedin-posts\">\n        <h2>Recent LinkedIn Posts</h2>\n        {{ $('Post').item.json.postsHTML }}\n      </div>\n      \n      <!-- Google Research Analysis -->\n      <div id=\"google-research\">\n        <h2>Google Research Analysis</h2>\n        <p>{{ $node[\"Research Company - Perplexity\"].json.choices[0].message.content }}</p>\n      </div>\n      \n      <!-- Trustpilot Reviews -->\n      <div id=\"trustpilot-reviews\">\n        <h2>Trustpilot Reviews</h2>\n        {{ $node[\"Reviews\"].json.reviewsHTML }}\n      </div>\n      \n      <!-- Citations -->\n      <div id=\"citations\">\n        <h2>Citations</h2>\n        {{ $node[\"Citations\"].json.citationsHTML }}\n      </div>\n      \n    </div>\n  </body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2192,
+        -160
+      ],
+      "id": "f1e74bcc-cf13-4cd8-9a98-e893b4c60491",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "sendTo": "mdmiraj7308@gmail.com",
+        "subject": "={{ $('Scrape Profiles + Posts - Relevance AI').item.json.linkedin_profile_details_data.full_name }} - Research Report",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2352,
+        -160
+      ],
+      "id": "73933bd4-ca8c-4ab2-a275-d129cfecfa6c",
+      "name": "Send a message",
+      "webhookId": "1ac48ad1-6b20-4d44-b4bc-23df0710fd13",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Calendly Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scrape Profiles + Posts - Relevance AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Profiles + Posts - Relevance AI": {
+      "main": [
+        [
+          {
+            "node": "Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post": {
+      "main": [
+        [
+          {
+            "node": "Experiences",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Experiences": {
+      "main": [
+        [
+          {
+            "node": "Education",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Education": {
+      "main": [
+        [
+          {
+            "node": "Research Company - Perplexity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Citations": {
+      "main": [
+        [
+          {
+            "node": "Review scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reviews": {
+      "main": [
+        [
+          {
+            "node": "Person + Company Profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Review scraping": {
+      "main": [
+        [
+          {
+            "node": "Reviews",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Person + Company Profile": {
+      "main": [
+        [
+          {
+            "node": "Pain Points + Solutions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Company - Perplexity": {
+      "main": [
+        [
+          {
+            "node": "Citations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pain Points + Solutions": {
+      "main": [
+        [
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "ae441940-7065-4186-b3cd-a628de97e613",
+  "triggerCount": 0,
+  "tags": []
+}
