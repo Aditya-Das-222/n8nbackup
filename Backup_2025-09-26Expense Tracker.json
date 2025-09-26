@@ -1,0 +1,530 @@
+{
+  "createdAt": "2025-08-18T14:54:02.328Z",
+  "updatedAt": "2025-09-10T13:43:00.000Z",
+  "id": "GW3dgcYhtVI8SXrk",
+  "name": "Expense Tracker",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1184,
+        -176
+      ],
+      "id": "d73536c6-ae45-4b7a-b055-d8fe4223e9e3",
+      "name": "Telegram Trigger",
+      "webhookId": "60ecaa9e-5ce2-45fe-a43a-c85883d945ee",
+      "credentials": {
+        "telegramApi": {
+          "id": "uK2pnp48djp1kdZO",
+          "name": "Rendom Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert expense tracking and update agent. Your job is to get user information and analyze it to update, delete, create, or get information from Airtable fields.\n\n# Here are the Airtable fields:\n- Reason: This is the field that will be used to store why the user spent that money.\n- Cost: How much the user spent.\n- Date: When did you spend it? Basically, it will be today's date.\n- Today's Date:{{$now}}\nHere is the user Query: {{ $json.query }}\n\n# Tools we have to use:\n- Create: Call this tool to create new expenses inside the database.\n- Search: Call this tool to get all the data inside the database. Sometimes, you may need to get the record ID to update the record, and you need information to give the user a query. Call this tool, get the user-requested information, and send it to the user.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        -192
+      ],
+      "id": "d1df1eb7-7ddb-441d-aa71-36fde525d89b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        64
+      ],
+      "id": "1e58b882-590b-47d1-b5e9-d636412e0611",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -192
+      ],
+      "id": "ce11701d-6310-4729-b261-e12daca989e0",
+      "name": "Send a text message",
+      "webhookId": "9ceac325-d092-44cb-84d7-05c1182413c4",
+      "credentials": {
+        "telegramApi": {
+          "id": "uK2pnp48djp1kdZO",
+          "name": "Rendom Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app9A8BRSWzsg5RSI",
+          "mode": "list",
+          "cachedResultName": "Expense Tracker",
+          "cachedResultUrl": "https://airtable.com/app9A8BRSWzsg5RSI"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblFXCOUpJN91h4tT",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/app9A8BRSWzsg5RSI/tblFXCOUpJN91h4tT"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        48
+      ],
+      "id": "db421c77-3be9-4978-b71f-e1475fa02122",
+      "name": "Create",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "rSNIhezu0OsOBSGS",
+          "name": "Airtable Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "494f6a51-dabe-4281-822a-09c4ec3fdd11"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f065cd7f-16cf-432b-bb60-04dbefbd49b8",
+                    "leftValue": "={{ $json.message.voice.mime_type }}",
+                    "rightValue": "audio/ogg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1008,
+        -176
+      ],
+      "id": "e7f272de-68ba-4a00-bee9-9893d83ddc3e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "en"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -592,
+        -80
+      ],
+      "id": "fbf47237-535a-45ae-bbb5-4e2e0de3549c",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -816,
+        -80
+      ],
+      "id": "bbbbd07c-da5f-4dfb-ace7-7979e6c6eb6a",
+      "name": "Get a file",
+      "webhookId": "276151cb-6e4e-4e6f-84ef-d0aa6abd320c",
+      "credentials": {
+        "telegramApi": {
+          "id": "uK2pnp48djp1kdZO",
+          "name": "Rendom Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6c9b74d-119b-4216-89b7-47666dae3312",
+              "name": "query",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        -80
+      ],
+      "id": "746811be-a80c-4ad6-b741-09daab073e04",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b43e1d40-ed6d-4656-895c-40cec412bf13",
+              "name": "query",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        -272
+      ],
+      "id": "02bc70d3-4d20-47fa-9b95-c70d89b60b29",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app9A8BRSWzsg5RSI",
+          "mode": "list",
+          "cachedResultName": "Expense Tracker",
+          "cachedResultUrl": "https://airtable.com/app9A8BRSWzsg5RSI"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblFXCOUpJN91h4tT",
+          "mode": "list",
+          "cachedResultName": "data",
+          "cachedResultUrl": "https://airtable.com/app9A8BRSWzsg5RSI/tblFXCOUpJN91h4tT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Reason": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Reason', ``, 'string') }}",
+            "Cost": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Cost', ``, 'string') }}",
+            "Date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Date', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Reason",
+              "displayName": "Reason",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cost",
+              "displayName": "Cost",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        272,
+        48
+      ],
+      "id": "50dc908f-0534-4cf2-b8e7-f263868ce3e5",
+      "name": "Create or update",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "rSNIhezu0OsOBSGS",
+          "name": "Airtable Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        64
+      ],
+      "id": "e1e9d235-cfaf-4661-b472-474149c5fb80",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "372f41cb-10fb-4933-beef-8cf719ffd16e",
+  "triggerCount": 1,
+  "tags": []
+}
