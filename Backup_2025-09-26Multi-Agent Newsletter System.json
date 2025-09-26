@@ -1,0 +1,442 @@
+{
+  "createdAt": "2025-08-21T15:50:02.099Z",
+  "updatedAt": "2025-08-30T07:20:49.000Z",
+  "id": "Z3kQgT5o2aquCFWp",
+  "name": "Multi-Agent Newsletter System",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 22
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        0
+      ],
+      "id": "02660615-37a7-46cc-bcaf-67c92ad42087",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "query": "Daily AI NEWS and UPDATE",
+        "options": {
+          "topic": "news",
+          "max_results": 3,
+          "time_range": "day"
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        304,
+        0
+      ],
+      "id": "c53bf6e1-cd50-4b38-8767-0ced3600ed11",
+      "name": "Research",
+      "credentials": {
+        "tavilyApi": {
+          "id": "N4KyQy7Ea3oWZV7c",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        400,
+        224
+      ],
+      "id": "e19716dd-d124-47e1-af8f-fc0b3d8897c6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        224
+      ],
+      "id": "870b6333-7d43-4381-970a-9cd0ba2376f2",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.cities",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        816,
+        0
+      ],
+      "id": "94f60be9-ea47-4888-ae02-a688deeaf778",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "query": "={{ $json['output.cities'] }}",
+        "options": {
+          "time_range": "month",
+          "include_raw_content": true
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        992,
+        0
+      ],
+      "id": "5195d9ed-5e88-43fe-b589-ab56acc14db2",
+      "name": "Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "N4KyQy7Ea3oWZV7c",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Topic : {{ $json.query }}\n\nResearch:\n{{ $json.results.map(item => JSON.stringify(item, null, 2)).join('\\n\\n') }}\n\n",
+        "options": {
+          "systemMessage": "=\nRewrite the following article into clear, well-structured English, making it easy to read in email format (300–500 words). Keep all facts, numbers, and quotes. Do not include any links. Input: {{article_text}}\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        1168,
+        0
+      ],
+      "id": "967ae9d6-0783-438d-ac60-b05440657691",
+      "name": "Section Writer Agent"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "output"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1504,
+        0
+      ],
+      "id": "69e07a8a-7ecb-4f5f-946a-054d888bcca2",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        208
+      ],
+      "id": "d9fd14e5-5515-4adc-b216-e956dfffba57",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Title:{{ $('Planning Agent').item.json.output.cities }}\nSections:{{ $json.output.join(\"\\n\\n\\n\") }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=\nSystem message:\nYou are a professional news editor. Your task is to rewrite raw AI-related articles into clean, well-structured, and engaging English content that is suitable for reading in an email update.\n\nUser prompt:\nTake the following article and rewrite it as a polished news piece.\n\nKeep the original facts, dates, numbers, and quotes accurate.\n\nExpand short sentences into clear paragraphs.\n\nMake the text 300–500 words.\n\nUse a professional but simple tone.\n\nDo not include any links or URLs.\n\nDo not shorten too much—keep it a complete article.\n\nInput:\n{{article_text}}\n\nOutput format:\n\nTitle\n\nPublish date\n\nSource name\n\nEdited full article (well-structured paragraphs)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        1680,
+        0
+      ],
+      "id": "c7dc141d-03de-4f66-8da1-4fe7e1fe8fd0",
+      "name": "Editor Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ ($json.results || []).map(item => JSON.stringify(item ?? {}, null, 2)).join('\\n\\n') }}\n\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Search and return up to 7 distinct AI-related articles published in the last 24 hours from reputable sources. For each article return:\n\nHeadline\n\nPublish date (ISO format)\n\nSource name\n\nFull article text (preserve paragraphs)\nDo not include URLs. If full text is unavailable, mark as \"FULL_TEXT_UNAVAILABLE\" and return the article summary (max 300 words). Output JSON array.",
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        0
+      ],
+      "id": "2f994cd3-4b89-4b1c-88dc-ca3696441149",
+      "name": "Planning Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        992,
+        208
+      ],
+      "id": "069fce9e-4bcb-45ba-a7b1-330f006458f9",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ECqhxTYCftAwDIMw",
+          "name": "Google Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"subject\": {\n      \"type\": \"string\",\n      \"description\": \"the email subject\"\n    },\n    \"content\": {\n      \"type\": \"string\",\n      \"description\": \"the newsletter content\"\n    }\n  },\n  \"required\": [\"subject\", \"content\"]\n}\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1984,
+        208
+      ],
+      "id": "22779cfe-deab-4c98-a157-7229d44be848",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "sendTo": "aditya.das.own@gmail.com",
+        "subject": "={{ $json.output }}",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2032,
+        0
+      ],
+      "id": "304ab248-756c-4c46-8d19-2af57e44bd3e",
+      "name": "Send a message",
+      "webhookId": "98976ab3-eefa-419e-9478-fc4ff285328d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "height": 672,
+        "width": 2256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        48,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "260984fa-c5be-4351-a827-3b7c87546a00",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research": {
+      "main": [
+        [
+          {
+            "node": "Planning Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Planning Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Planning Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search": {
+      "main": [
+        [
+          {
+            "node": "Section Writer Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Section Writer Agent": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Editor Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Editor Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planning Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Section Writer Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Editor Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Editor Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "29463871-33e1-48dc-b378-3a1d2edaa13c",
+  "triggerCount": 0,
+  "tags": []
+}
