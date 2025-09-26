@@ -1,0 +1,4248 @@
+{
+  "createdAt": "2025-08-30T14:34:44.519Z",
+  "updatedAt": "2025-08-30T14:35:03.000Z",
+  "id": "7jayc6BF6q5ObquS",
+  "name": "ultra lead gen",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -2336,
+        304
+      ],
+      "id": "1a68a30e-c6fb-4b29-b16d-bdef2607a9ae",
+      "name": "Airtable"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1888,
+        304
+      ],
+      "id": "ca663ef5-5656-4158-b26f-7e01f8a777c7",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "emailVerifier",
+        "email": "={{ $json.Email }}"
+      },
+      "type": "n8n-nodes-base.hunter",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        224
+      ],
+      "id": "d74c8cfa-c199-4756-bf1e-19f55df79cd4",
+      "name": "Hunter"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Status": "={{ $json.status }}",
+            "Email": "={{ $json.email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1440,
+        224
+      ],
+      "id": "c242cc46-e0c3-4162-82f3-aaf49281611f",
+      "name": "Airtable1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Airtable1').item.json.fields.Email }}",
+            "Research": "={{ $json.choices[0].message.content }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Research",
+              "displayName": "Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -928,
+        320
+      ],
+      "id": "d4437b04-24c1-4d1d-9376-6ed87498f543",
+      "name": "Airtable2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-3.5-turbo"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -768,
+        832
+      ],
+      "id": "7641e175-0dac-4411-941b-56053870ae99",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "\n{\n  \"email1\": {\n    \"subject\": \"TEXT-HERE\",\n    \"body\": \"HTML-HERE\"\n  },\n  \"email2\": {\n    \"subject\": \"TEXT-HERE\",\n    \"body\": \"HTML-HERE\"\n  },\n  \"email3\": {\n    \"subject\": \"HERE\",\n    \"body\": \"HTML-HERE\"\n  },\n\"Lead\": {\n\"Score\":\"write here lead score( like 0-30 as cold lead, 31-70 as warm lead and 71-100 as Hot lead)\",\n\"Status\": \"Cold/warm/Hot\"\n}\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -608,
+        832
+      ],
+      "id": "2cda2499-c9ed-4cf4-9033-bcc74f7f2cf5",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Airtable1').item.json.fields.Email }}",
+            "Email 1": "={{ $json.output.email1.body }}",
+            "Email 1 Subject": "={{ $json.output.email1.subject }}",
+            "Email 2": "={{ $json.output.email2.body }}",
+            "Email 2 Subject": "={{ $json.output.email2.subject }}",
+            "Email 3 subject": "={{ $json.output.email3.subject }}",
+            "Email 3": "={{ $json.output.email3.body }}",
+            "Lead Score": "={{ $json.output.Lead.Score }}",
+            "Status": "={{ $json.output.Lead.Status }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Perplexity Research",
+              "displayName": "Perplexity Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Score",
+              "displayName": "Lead Score",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        784
+      ],
+      "id": "69675ee4-f959-4754-805c-317d7b059ace",
+      "name": "Airtable3"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=# Overview\nYou are part of the cold email team at MM-Automation, which is an AI Automation Agency. \n\nMM's offers the following services: \n- Business Automation: Automating internal business processes to save time, money or reduce error. \n- Marketing Automation: Automating marketing processes like SEO, cold email etc, to generate leads with minimal investment of time or money. \n- Automation Consulting: Advice on automating various processes. \n\n# Task\nYour job is to analyse the research found on a prospect, in preparation for a cold email. \nFor each prospect you must find the following: \n\n1. Personalization opportunity:Cold emails perform much better when personalized. You must analyse the research found on the prospect to identify the top personalization opportunities.The personalization can be one of the following: \n- Referencing content they’ve posted [best one].\n- Mentioning a specific achievement or news related to themselves or their business.\n- personalized compliment or observation about the recipient’s work.\n- Mentioning unique aspects of their professional background. \nThe references must be highly specific that couldn't be mass-generated. Adding each reference to the cold email should feel like a 1 to 1 communication, showing we've done our research on the prospect. Aim: Reader thinks “Whoa, this is for me.” If you can't find any good personalization opportunities, then leave this blank. \n\n\n2. Pain points and solutions: Analyse the research to identify the prospects biggest pain points. Take into consideration their role, their company details and all other research to predict what their biggest bottle necks are. Then think of these pain points in terms of Kamexa's services - Which ones can we solve? List the 2 biggest pain points that we can help with and define the actionable solution we can offer them. Turn the actionable solution into a clear and concise offer. \n- The solutions should be specific offerings, not broad services. So instead of saying \"automation\", you must clearly define exactly what process will be automated.\n\n\n# Output Format \nYour output must be in the following format: \n\nPersonalization\n1. Opportunity: HERE\nSupporting Evidence: HERE\n\n2. Opportunity: HERE\nSupporting Evidence: HERE\n\n(…add more as needed)\n\n⸻\n\nPain Points & Solutions\n1. Pain Point: HERE\nSupporting Evidence: HERE\nOffer: HERE\n\n2. Pain Point: HERE\nSupporting Evidence: HERE\nOffer: HERE\n\nWhere supporting evidence is where you must include specific examples and evidence from the research that support your findings. You must give enough detail in the HERE sections so the reader does not need to revisit the research to create a cold email.\nThe opportunities should also be explained in detail, so the reader has enough context to understand the opportunity. So for example, instead of saying \"news A\", you must explain exactly what \"news A\" entitles and why it's significant. \n\n- Don't output anything else.\n- Replace HERE with the relevant string.\n- If there are no clear personalization opportunities, then replace HERE with null. \n- Make sure your outputs are well thought out. \n\n# Complete the analysis for the following prospect. \n\nResearch: \n\n\n\n2. Company research from searching the web: \n{{ $json.choices[0].message.content }}\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1008,
+        128
+      ],
+      "id": "16068c65-ea22-46d1-865e-cfd1aef0f656",
+      "name": "Analyze"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Task: New prospect\nThere's a new prospect. Create the emails by considering the following details: \n\nProspect Details: \n\nFirst Name:{{ $('Airtable1').item.json.fields['First Name'] }}\n\nLast Name:{{ $('Airtable1').item.json.fields['Last Name'] }}\n\nTitle:{{ $('Airtable1').item.json.fields.Title }}\n\nCompany Name:{{ $('Airtable1').item.json.fields['Company Name'] }}\n\nEmail:{{ $('Airtable1').item.json.fields.Email }}\n\nIndustry:{{ $('Airtable1').item.json.fields.Industry }}\n\nCountry: {{ $('Airtable1').item.json.fields.Country }}\n\n\nAnalyzation: {{ $json.message.content }}\n\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are part of the cold email team for MM-Automation, which is an AI Automation Agency offering process automation, marketing automation and automation consulting to businesses around the world. \n\nYour main job is:\n\n1.  Scoring the perspect based one details and Research ( like 0-30 as cold lead, 31-70 as warm lead and 71 to 100 as Hot lead)\n\n2.To create 3 emails given the following info about a new cold lead: \n\n- Research: Findings about the prospect by researching them on social media and       the web. \n- Analysis: Insights extracted from analysing the research. \n- Tactic: Strategy to create the cold emails. \n\nYour job is to create a cold email sequence of 3 emails which will be sent 3 days apart. The tactic for each email should closely follow the instructions below, whilst the content of each email must follow the research and analysis. \n\n\n# Tactic: \n\n1. Email#1: \n\n1.1 Subject line: \n\nThe email subject line should : \n- Be maximum 10-15 words \n- Include the prospects name or company name (choose based on context) when possible without sounding unnatural \n- Never include spam trigger words like “free,” “guarantee,” “no obligation,” \"price,\" \"100%\" \"sale,\" and excessive punctuation, which can trigger spam filters. \n- Create curiousity without sounding spammy or like we're selling them anything \n\n\n1.2 Body\n\nStructure: The email must follow this structure closely:\na) Hook: The first 2 or 3 sentences of the email is a hook. The hook should be the personalization part of the email, capturing the prospects attention so they don't scroll. \nb) Pain point: After the hook, you must outline a pain point that was analysed about the prospect. This shouldn't sound salesy, but should be directly related to their business. The goal is to capture the readers attention, not sell them a solution. \nc) CTA: Say you've been working on solving that problem and would love to share your insights over a quick 15 minute call on. Have a clear next step for them (for example \"Should I book you in?).  add a calendly link with every email: https://calendly.com/10xcubemiraj/book-a-meeting, so that prespective can esily can book a call.\n\n\nGuidelines -  The email body should:\n\n- maximum 300 words.\n- Have short paragraphs ( 2 or 3 sentences in each) to include white space. \n- Use a conversational tone to keep the email casual. \n- Be \"You\" focused, incorporating \"you\" as much as possible.\n- Be in 6th-grade reading level with simple language. \n- Avoid images, attachments, videos, custom code, spammy words above, bullet points, punctuation.\n- Not have absurd claims (it should be believable).\n- Should always start with \"Hey ,{{ $('Airtable1').item.json.fields['First Name'] }}\"\n- Should be concise. \n- Never start with formal openers like \"Hope you're doing well\" (Get right into the email every time).\n- Be nice and inviting.\n- End with \"Kind regards, Miraj\"\n\n\n2. Email#2: \nThis email will be in the same structure as email#1 and is considered a follow-up email of email#1.\n\n\n3. Email#3: \n\nthis email should follow the same structure, guidelines of Email#1, & it is the last and final email with the following differences: \n- It should mention a different pain point identified. \n- Should be like you already know them from the previous conversation, so it shouldn't include any personalisation other than the prospects name. Can start with a variation of I was thinking about {Prospect Company Name} again and...\n\n\n#CTA: The call to action should include the following calendly link in every emails so the prospect can book a time that suits: https://calendly.com/10xcubemiraj/book-a-meeting\n\n# Rules - Other things to consider: \n- Your goal is to create an engaging email that will get us a reply. Choose the best pain points and personalization opportunities from the analysis to achieve this objective. \n- You must closely follow the guidelines provided for each email. \n- Never come across condescending or rude when mentioning the pain point. \n- When using the personalization opportunities from the analysis, always mention where the info was found - usually  \"Online\" or \"LinkedIn\" (look at Supporting Evidence for this).\n\n# Output format\nYour output must follow this JSON format: \n\n{\n  \"email1\": {\n    \"subject\": \"TEXT-HERE\",\n    \"body\": \"HTML-HERE\"\n  },\n  \"email2\": {\n    \"subject\": \"TEXT-HERE\",\n    \"body\": \"HTML-HERE\"\n  },\n  \"email3\": {\n    \"subject\": \"HERE\",\n    \"body\": \"HTML-HERE\"\n  },\n\"Lead\": {\n\"Score\":\"write here lead score( like 0-30 as cold lead, 31-70 as warm lead and 71-100 as Hot lead)\"\n\"Status\": \"Cold/warm/Hot\"\n}\n}\n\n- Don't wrap the output in ```json```. \n- Don't output anything else. \n- Keep the HTML code to a minimum by using only <br> for line breaks and nothing else.\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        608
+      ],
+      "id": "ba2b467c-ad9d-4d21-a6c1-864359ee44d8",
+      "name": "Dynamic Personalized Email"
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -2128,
+        304
+      ],
+      "id": "cd738b11-31b6-4aa8-9cae-f6bee4e9c9b2",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer  Your Token"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"sonar\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a researcher in a business development team. Your job is to find as much research as you can about a prospect company. You must ensure your research is for the correct company and is highly accurate. Your research must always include what the prospect company does in detail. Your research should also highlight any recent news or accomplishments from the company.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Find as much info as you can about the person. Person linkedin url: {{ $json.fields['Personal Linkedin Url'] }}}} This is their website URL:{{ $json.fields['Website '] }} . Make sure your research is 100% related to them.\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1216,
+        224
+      ],
+      "id": "5d880137-5f37-4c72-8b5b-694b690ef129",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "Email Verification\n",
+        "height": 520,
+        "width": 180,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        32
+      ],
+      "id": "2c59d769-174a-4e96-9328-9d981e2aafa2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Lead research and enrichment\n",
+        "height": 520,
+        "width": 680,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        32
+      ],
+      "id": "8566fff1-5d5d-4f89-a3d9-3032e917cc26",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "Personalized Follow-Up Email Writing \nAI-powered intelligent lead scoring system\n",
+        "height": 520,
+        "width": 1120,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        560
+      ],
+      "id": "6ec92e8c-763d-48ec-8cf3-d124b1e282bb",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 520,
+        "width": 1940,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2624,
+        32
+      ],
+      "id": "a691335e-936c-4bf4-a285-4f26a3fe4432",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "Data Pull From Airtable CRM                         ",
+        "height": 520,
+        "width": 220,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2400,
+        32
+      ],
+      "id": "804cb440-00a9-47d7-912d-6edf450c53ce",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2560,
+        304
+      ],
+      "id": "ba885ea8-f087-48c9-8780-37fe07b8d817",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "={{ $json['Email 1 Subject'] }}",
+        "message": "={{ $json['Email 1'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1184,
+        352
+      ],
+      "id": "25869ba1-02bb-4336-8549-07bac67417e9",
+      "name": "Gmail3",
+      "webhookId": "7991dbd6-9db7-4a38-ab95-b4c9756b93ee"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        960,
+        352
+      ],
+      "id": "bd327dfd-8c8a-4a26-9053-3c414fa1bde4",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1408,
+        432
+      ],
+      "id": "6814b572-ef23-42f5-be34-16e8e05f9cfd",
+      "name": "Wait1",
+      "webhookId": "c4cf719a-d47f-4761-8a16-aff92b8e9a19"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Email 1 Send?'] }}",
+                    "rightValue": "No",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ab9b8063-e665-4932-8d7c-2693897aa426"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        528,
+        352
+      ],
+      "id": "1ac350c2-7e77-4c00-a7ab-82f6691f50a3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * Mon"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        352
+      ],
+      "id": "a3eccd04-9f0a-4e80-a746-c4ea2c9458ce",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        352
+      ],
+      "id": "b3f425c2-155f-491b-8c28-17a18e6fc312",
+      "name": "Airtable4"
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        752,
+        352
+      ],
+      "id": "7560886b-5020-4749-991c-94d31b1b6035",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email 1 Send?": "Yes",
+            "Email": "={{ $('Airtable4').item.json.Email }}",
+            "Massage ID": "={{ $json.threadId }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Perplexity Research",
+              "displayName": "Perplexity Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Score and Status",
+              "displayName": "Lead Score and Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1184,
+        144
+      ],
+      "id": "20ccca99-5ff3-4341-8cd1-116106162c15",
+      "name": "Airtable5"
+    },
+    {
+      "parameters": {
+        "content": "\nAutomated email sequences for outreach.    \nCold Email Follow-Up – Email #1 ",
+        "height": 640,
+        "width": 1600,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d53da19b-73d0-4d10-ac88-5f4d19a76901",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2d1b89f0-661b-4b21-9bb2-cb8419b22035",
+              "name": "replied",
+              "value": "={{ Object.keys($json).length > 0 ? \"Yes\" : \"No\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3104,
+        480
+      ],
+      "id": "3a4829eb-4478-4951-9caa-2edb738b22dd",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "177601be-b2c3-45cc-8e15-cd064fbaf578",
+              "leftValue": "={{ $json.replied }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3552,
+        384
+      ],
+      "id": "b8abecb0-1f97-4117-9ecf-ae7e501ff886",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        3328,
+        384
+      ],
+      "id": "fefca913-7eb6-4b73-89c2-0b5609debb0f",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "sender": "={{ $json.Email }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2880,
+        480
+      ],
+      "id": "48c86f8b-e3ba-4bed-88e0-a24e561aab9a",
+      "name": "Replied?1",
+      "webhookId": "6cdae860-913e-4fa7-97af-e49f0cdcd11d",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2672,
+        480
+      ],
+      "id": "7a3cffc4-b963-4a5f-9239-420555968a0e",
+      "name": "Loop Over Items3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4000,
+        400
+      ],
+      "id": "39eace29-8dc4-4f5a-a4c7-8ff686c1a94f",
+      "name": "Wait3",
+      "webhookId": "5fcbde9f-0750-405b-8ff7-8bce2e4a16ef"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "05b2d9b4-01ae-4c50-b430-8f5f68f8e388",
+              "leftValue": "={{ $json['Email 1 Send?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "cb95bccf-be0a-4511-8a09-612c084853f7",
+              "leftValue": "={{ $json['Email 2 sent?'] }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4a124f3c-e4a4-487e-807b-dce6e0d64e29",
+              "leftValue": "={{ $json['Email 1 Reply?'] }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2448,
+        480
+      ],
+      "id": "c28f878f-048f-4f70-8d1c-b8e35b2f9312",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email 1 Reply?": "={{ $json.replied }}",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Perplexity Research",
+              "displayName": "Perplexity Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Score and Status",
+              "displayName": "Lead Score and Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        3760,
+        480
+      ],
+      "id": "93d41785-e060-480e-a6fe-7a72b7bec181",
+      "name": "Replied= Yes",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "={{ $json['Email 2 Subject'] }}",
+        "message": "={{ $json['Email 2'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3760,
+        288
+      ],
+      "id": "124796d6-9e41-40a0-adc4-607fe7aac81c",
+      "name": "Gmail",
+      "webhookId": "48fefdcd-3a05-4e4d-8886-4e3c91f95969"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('If').item.json.Email }}",
+            "Email 2 sent?": "Yes"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Perplexity Research",
+              "displayName": "Perplexity Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Score and Status",
+              "displayName": "Lead Score and Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2880,
+        144
+      ],
+      "id": "8dd5fbe1-6110-41ca-89b1-0737890ab093",
+      "name": "Replied= Yes1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "sendTo": "mdmiraj7308@gmail.com",
+        "subject": "=Hi, you’ve received a new reply from a {{ $json.fields['First Name'] }}",
+        "emailType": "text",
+        "message": "=Summary Of Leads: \nName: {{ $json.fields['First Name'] }}\nEmail: {{ $json.fields.Email }}\nTitle: {{ $json.fields.Title }}\nCompany: {{ $json.fields['Company Name'] }}\n\nThank You.\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3104,
+        144
+      ],
+      "id": "f45d6d3e-7393-4df2-9530-7274ecf02122",
+      "name": "Gmail1",
+      "webhookId": "2ad7a883-3b37-4526-9475-b69f2e27406a"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * Wed"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        2000,
+        480
+      ],
+      "id": "9c722f9e-05b8-4f1d-acb2-273bedd115d2",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "filterByFormula": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2224,
+        480
+      ],
+      "id": "a200b9af-01c9-443a-a2a6-88a59f85dc93",
+      "name": "Airtable6"
+    },
+    {
+      "parameters": {
+        "content": "Cold Email Follow-Up – Message #2",
+        "height": 800,
+        "width": 2300,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        0
+      ],
+      "id": "5434545b-9017-4832-a760-643d4f30710d",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * Wed"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2544,
+        1808
+      ],
+      "id": "ca55f309-9c0b-4f32-ac34-9b7cec88d59c",
+      "name": "Schedule Trigger3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2d1b89f0-661b-4b21-9bb2-cb8419b22035",
+              "name": "replied",
+              "value": "={{ Object.keys($json).length > 0 ? \"Yes\" : \"No\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1440,
+        1808
+      ],
+      "id": "c07b04e6-6dd2-4960-9959-ff667df897e2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "177601be-b2c3-45cc-8e15-cd064fbaf578",
+              "leftValue": "={{ $json.replied }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1008,
+        1712
+      ],
+      "id": "248b0705-1005-473b-b750-041335f2cb1a",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -1216,
+        1712
+      ],
+      "id": "6447a519-52f8-4110-9fe7-ce37edd5967a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "returnAll": true,
+        "filters": {
+          "sender": "={{ $json.Email }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1664,
+        1808
+      ],
+      "id": "5b1907f6-cdf6-4a37-b339-695926d5d06e",
+      "name": "Replied?",
+      "webhookId": "de4b9450-4305-4902-ad7c-76473809dde7",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1888,
+        1808
+      ],
+      "id": "9a22e609-2fc7-491a-afae-1f376ac8c104",
+      "name": "Loop Over Items4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        1792
+      ],
+      "id": "132f1f2a-e65f-44ce-9df6-f0eac14d37c7",
+      "name": "Wait",
+      "webhookId": "27cefd79-63fc-4926-b73a-8cfd9f8e3838"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "filterByFormula": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -2320,
+        1808
+      ],
+      "id": "321694c7-8fed-4cf8-ae2b-980a3db0117f",
+      "name": "Airtable7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "05b2d9b4-01ae-4c50-b430-8f5f68f8e388",
+              "leftValue": "={{ $json['Email 1 Send?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "cb95bccf-be0a-4511-8a09-612c084853f7",
+              "leftValue": "={{ $json['Email 2 sent?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4a124f3c-e4a4-487e-807b-dce6e0d64e29",
+              "leftValue": "={{ $json['Email 1 Reply?'] }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "669062c7-6c8e-47cf-9bbf-51fff2d8436a",
+              "leftValue": "={{ $json['Email 2 Reply?'] }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "2612fb1f-9324-4005-92b7-e08d1c705719",
+              "leftValue": "={{ $json['Email 3 Reply ?'] }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2096,
+        1808
+      ],
+      "id": "8218ce78-a42a-46de-a92e-aa9374ca7368",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email 1 Reply?": "={{ $json.replied }}",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Perplexity Research",
+              "displayName": "Perplexity Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Score and Status",
+              "displayName": "Lead Score and Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -784,
+        1808
+      ],
+      "id": "5ef5f8f9-ce39-40ee-91ae-56d8974e09de",
+      "name": "Replied= Yes2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "={{ $json['Email 3 subject'] }}",
+        "message": "={{ $json['Email 3'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -784,
+        1600
+      ],
+      "id": "912ae062-f669-4fed-aa38-f9291ac34e93",
+      "name": "Gmail2",
+      "webhookId": "801a2dd4-abf2-4bcc-8da6-a65d2188b4c5"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('If3').item.json.Email }}",
+            "Email 3 Send ?": "Yes"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email Status",
+              "displayName": "Email Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personal Linkedin Url",
+              "displayName": "Personal Linkedin Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website ",
+              "displayName": "Website ",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Perplexity Research",
+              "displayName": "Perplexity Research",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Score and Status",
+              "displayName": "Lead Score and Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1",
+              "displayName": "Email 1",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Subject",
+              "displayName": "Email 1 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2",
+              "displayName": "Email 2",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Subject",
+              "displayName": "Email 2 Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3",
+              "displayName": "Email 3",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 subject",
+              "displayName": "Email 3 subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Send?",
+              "displayName": "Email 1 Send?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Massage ID",
+              "displayName": "Massage ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 1 Reply?",
+              "displayName": "Email 1 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 sent?",
+              "displayName": "Email 2 sent?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 2 Reply?",
+              "displayName": "Email 2 Reply?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email 3 Send ?",
+              "displayName": "Email 3 Send ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email 3 Reply ?",
+              "displayName": "Email 3 Reply ?",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1664,
+        1488
+      ],
+      "id": "d40feee3-2fb1-4212-beb8-c9ae75f5b564",
+      "name": "Replied= Yes3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "sendTo": "mdmiraj7308@gmail.com",
+        "subject": "=Hi, you’ve received a new reply from a {{ $json.fields['First Name'] }}",
+        "emailType": "text",
+        "message": "=Summary Of Leads: \nName: {{ $json.fields['First Name'] }}\nEmail: {{ $json.fields.Email }}\nTitle: {{ $json.fields.Title }}\nCompany: {{ $json.fields['Company Name'] }}\n\nThank You.\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1440,
+        1488
+      ],
+      "id": "ae36b525-9922-48ca-87b6-a9e5e9f0b3d0",
+      "name": "Gmail4",
+      "webhookId": "2ad7a883-3b37-4526-9475-b69f2e27406a"
+    },
+    {
+      "parameters": {
+        "content": "Cold Email Follow-Up – Message #3 and Closs",
+        "height": 720,
+        "width": 2340,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2624,
+        1392
+      ],
+      "id": "3d4c8a2d-d26c-4f44-bac5-6cc7bfca8fb1",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        1584
+      ],
+      "id": "6344bee4-dd14-4f4f-bbc8-ab23cff9fd0a",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"Sub\": \"Write here report subject\",\n\"Email Body\": \"Write here a full report in a professional way\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1008,
+        1600
+      ],
+      "id": "cc380d6e-215c-4fef-9472-107d8957f7ee",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert sales and marketing data analyst with deep knowledge of Airtable systems. Your purpose is to extract lead data and ROI metrics from Airtable, analyze the information, and generate comprehensive executive reports with actionable insights.\n\n## Tools\n\n1. Airtable CRM: stored all leads data\n2. Airtable ROI: All ROI information stored hered\n\nOut put as:\n1. PDF-style formatted report with:\n   - Clean data visualizations\n   - Annotated insights\n   - Actionable recommendations\n2. Optional supplemental files:\n   - Raw data export\n   - Interactive dashboard \n   - Presentation slides\n\n## Add Analytic Dashboard and Roi Dashboard in every Report:\nAnalytic Dashoard: https://airtable.com/appVowJ94PeZWh3iv/pag4k7mcKkVUbvXwY\nROI Dashboard: https://airtable.com/appVowJ94PeZWh3iv/pagbv97HV6WOWxvdv/edit\n\nOut as Format: \n\"Sub\":\"Write here report subject\"\n\"Email Body\" : Write here full report in a professonal way\"",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        752,
+        1392
+      ],
+      "id": "3642c09c-9ce9-49f7-9f85-59be4d4d6601",
+      "name": "Report Generate Agent"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        1392
+      ],
+      "id": "9622248b-22e0-4041-b75a-4d46a0779b4c",
+      "name": "Schedule Trigger4"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblxUXHiWWWDtoQdB",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Lead Details",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblxUXHiWWWDtoQdB"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        768,
+        1600
+      ],
+      "id": "47c02888-02b2-4f33-9b07-2539f8c8ecee",
+      "name": "Airtable8"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appVowJ94PeZWh3iv",
+          "mode": "list",
+          "cachedResultName": "Lead Generation & CRM System- 1 ",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblC1acRyc9yca3Pc",
+          "mode": "list",
+          "cachedResultName": "ROI Analysis and Tracking",
+          "cachedResultUrl": "https://airtable.com/appVowJ94PeZWh3iv/tblC1acRyc9yca3Pc"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        1600
+      ],
+      "id": "c0fbc0f4-cdd1-4857-b163-93ff725cbfe7",
+      "name": "Airtable9"
+    },
+    {
+      "parameters": {
+        "sendTo": "mdmiraj7308@gmail.com",
+        "subject": "={{ $json.output.Sub }}",
+        "emailType": "text",
+        "message": "={{ $json.output['Email Body'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        1392
+      ],
+      "id": "1c0b203e-723e-4722-ad71-032fde1aff18",
+      "name": "Gmail5",
+      "webhookId": "406caebc-172f-4c3e-9274-2088a8f3a735"
+    },
+    {
+      "parameters": {
+        "content": "Advanced reporting \nROI tracking\nPerformance analytics dashboard\n\n",
+        "height": 560,
+        "width": 1120,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        352,
+        1248
+      ],
+      "id": "db9808d8-0100-4ee7-8d63-44ee553245bc",
+      "name": "Sticky Note8"
+    }
+  ],
+  "connections": {
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Hunter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hunter": {
+      "main": [
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Dynamic Personalized Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Dynamic Personalized Email",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze": {
+      "main": [
+        [
+          {
+            "node": "Dynamic Personalized Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dynamic Personalized Email": {
+      "main": [
+        [
+          {
+            "node": "Airtable3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Analyze",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Airtable2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail3": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Airtable5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Airtable4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable4": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Replied= Yes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replied?1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [
+          {
+            "node": "Replied= Yes1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replied?1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replied= Yes": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replied= Yes1": {
+      "main": [
+        [
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Airtable6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable6": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger3": {
+      "main": [
+        [
+          {
+            "node": "Airtable7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Replied= Yes2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replied?": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items4": {
+      "main": [
+        [
+          {
+            "node": "Replied= Yes3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replied?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable7": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replied= Yes2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail2": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replied= Yes3": {
+      "main": [
+        [
+          {
+            "node": "Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Report Generate Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Report Generate Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report Generate Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger4": {
+      "main": [
+        [
+          {
+            "node": "Report Generate Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable8": {
+      "ai_tool": [
+        [
+          {
+            "node": "Report Generate Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable9": {
+      "ai_tool": [
+        [
+          {
+            "node": "Report Generate Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "01a7efe4-0090-427b-95fc-7ddcc008cc7e",
+  "triggerCount": 0,
+  "tags": []
+}
