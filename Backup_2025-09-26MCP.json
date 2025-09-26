@@ -1,0 +1,71 @@
+{
+  "createdAt": "2025-08-12T14:50:56.311Z",
+  "updatedAt": "2025-08-12T16:52:22.000Z",
+  "id": "7rcH3D5jmeauTlnj",
+  "name": "MCP",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "5edc5499-67cb-4c66-b703-7119d1d9b1a4"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        48,
+        64
+      ],
+      "id": "5057ce29-ddbe-4d6b-a2dd-e77c6cb12e6e",
+      "name": "MCP Server Trigger",
+      "webhookId": "5edc5499-67cb-4c66-b703-7119d1d9b1a4"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        144,
+        272
+      ],
+      "id": "908eb9ac-a44a-446a-8b19-16976b748f7e",
+      "name": "Get many messages in Gmail",
+      "webhookId": "cc421090-4fad-4339-9fd6-4fa522ba221b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c00580ce-e818-4673-a008-eb683cd31107",
+  "triggerCount": 0,
+  "tags": []
+}
