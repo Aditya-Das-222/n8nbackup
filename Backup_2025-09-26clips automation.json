@@ -1,0 +1,541 @@
+{
+  "createdAt": "2025-09-11T12:52:22.351Z",
+  "updatedAt": "2025-09-12T17:04:36.000Z",
+  "id": "OrwQiQhQt0DYCv7r",
+  "name": "clips automation",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        112,
+        432
+      ],
+      "id": "d684b3c4-8d88-4a92-bd5f-8aa6ffa84322",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "videos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        464,
+        736
+      ],
+      "id": "ffa66ee3-330e-4339-a023-cad2c15c7674",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "=https://elb-api.vizard.ai/hvizard-server-front/open-api/v1/project/query/{{$json.projectId}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "VIZARDAI_API_KEY",
+              "value": "db94acded4df4566be07c93d324f444b"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        736
+      ],
+      "id": "8490ddd8-6a14-4bbc-bfa5-3943c2e54f0e",
+      "name": "Retrieve Vizard Project"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://elb-api.vizard.ai/hvizard-server-front/open-api/v1/project/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "VIZARDAI_API_KEY",
+              "value": "db94acded4df4566be07c93d324f444b"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"lang\": \"en\",\n  \"preferLength\": [\n    0\n  ],\n  \"videoUrl\": \"{{ $json.link }}\",\n  \"videoType\": 2\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        432
+      ],
+      "id": "30941416-25a3-4f26-8b78-a3dae42b2769",
+      "name": "Send Longform to Vizard"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        656,
+        736
+      ],
+      "id": "a32517b1-edd7-495f-8e80-d5c31433ba12",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent social media assistant. You make captions for Instagram and TikTok.",
+              "role": "system"
+            },
+            {
+              "content": "Your task is to generate high-quality, engaging captions for Instagram and TikTok.\n\nYou'll be fed a transcript.\n\nReturn your captions in JSON using this format:\n\n{\"caption\":\"\"}\n\nRules:\n- Keep captions to ~100 words.\n- Use a spartan tone of voice, favoring the classic Western style (though still a fit for Instagram and TikTok).\n- Write conversationally, i.e as if I were doing the writing myself (in first person.\n- Use emojis, but sparingly.\n- Ensure each sentence is over 5 words long. Write for a University reading level."
+            },
+            {
+              "content": "={{ $json.transcript }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        816,
+        800
+      ],
+      "id": "b47a41b9-7246-439f-9a5c-d9c64c796226",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "NSQH7jdDrTIGJRAn",
+          "name": "Automation learner pro"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        768
+      ],
+      "id": "7022c1b4-52f5-4256-a3a0-d80f38ddbe0c",
+      "name": "Wait",
+      "webhookId": "1d588357-cb88-42b5-b34f-ed3c767dbf04"
+    },
+    {
+      "parameters": {
+        "content": "2. Retrieve & generate\n",
+        "height": 376,
+        "width": 1512
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        48,
+        624
+      ],
+      "id": "8d8229f4-b833-4df4-ab0d-355ab1b7c11b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# 1. Scrape & send\n",
+        "height": 268,
+        "width": 1128
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        48,
+        336
+      ],
+      "id": "f27a094a-8ade-4616-ae31-bd7fa650bbc1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbo-KbSjJDG6JWQ_MTZ_rNA",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        432
+      ],
+      "id": "a7affdd2-8c55-47b8-87ee-1f74c947dcd3",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        448,
+        432
+      ],
+      "id": "f8701b36-3af7-4dfe-bbd4-ef8edf306b63",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d40c9293-818e-49c9-bcff-a864bd524427",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        96,
+        736
+      ],
+      "id": "c68a511a-aa5d-4036-a559-0a33a6d1e347",
+      "name": "Webhook",
+      "webhookId": "d40c9293-818e-49c9-bcff-a864bd524427"
+    },
+    {
+      "parameters": {
+        "sendTo": "nickolassaraev@gmail.com",
+        "subject": "Hey—your clips are ready to go!",
+        "emailType": "text",
+        "message": "=Hi Nick,\n\nYour clips are ready to go. Just check the spreadsheet below: https://docs.google.com/spreadsheets/d/1uo3Cq4AoSNhZW8sZup8V5AM55BRua7skVf9gOjxg-Wg/edit?usp=sharing\n\nHappy clipping!\n\nThanks,\nNick",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        640
+      ],
+      "id": "f6a4d417-8d01-4e08-b517-7fef0f31ca21",
+      "name": "Send a message",
+      "webhookId": "1090375c-2e63-47d6-9b18-f82ee339351b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Akfxp65UCevrEpLh",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1uo3Cq4AoSNhZW8sZup8V5AM55BRua7skVf9gOjxg-Wg",
+          "mode": "list",
+          "cachedResultName": "Shorts Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uo3Cq4AoSNhZW8sZup8V5AM55BRua7skVf9gOjxg-Wg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Shorts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uo3Cq4AoSNhZW8sZup8V5AM55BRua7skVf9gOjxg-Wg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "videoId": "={{ $('Split Out').item.json.videoId }}",
+            "projectId": "={{ $('Retrieve Vizard Project').item.json.projectId }}",
+            "videoUrl": "={{ $('Split Out').item.json.videoUrl }}",
+            "videoMsDuration": "={{ $('Split Out').item.json.videoMsDuration }}",
+            "title": "={{ $('Split Out').item.json.title }}",
+            "transcript": "={{ $('Split Out').item.json.transcript }}",
+            "viralScore": "={{ $('Split Out').item.json.viralScore }}",
+            "viralReason": "={{ $('Split Out').item.json.viralReason }}",
+            "relatedTopic": "={{ $('Split Out').item.json.relatedTopic }}",
+            "clipEditorUrl": "={{ $('Split Out').item.json.clipEditorUrl }}",
+            "generatedCaption": "={{ $json.message.content.caption }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "videoId",
+              "displayName": "videoId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "projectId",
+              "displayName": "projectId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoUrl",
+              "displayName": "videoUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "videoMsDuration",
+              "displayName": "videoMsDuration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "viralScore",
+              "displayName": "viralScore",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "viralReason",
+              "displayName": "viralReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "relatedTopic",
+              "displayName": "relatedTopic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "clipEditorUrl",
+              "displayName": "clipEditorUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "generatedCaption",
+              "displayName": "generatedCaption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1184,
+        768
+      ],
+      "id": "be6859ec-b6ac-426b-85fd-f4bc08ad267d",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LqP8MSiwVRVCSrSN",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Vizard Project": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Send Longform to Vizard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Vizard Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {
+          "projectId": "21292525"
+        }
+      }
+    ]
+  },
+  "versionId": "3a4fb161-c853-407f-a11b-89a68f863425",
+  "triggerCount": 0,
+  "tags": []
+}
