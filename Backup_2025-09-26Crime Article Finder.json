@@ -1,0 +1,217 @@
+{
+  "createdAt": "2025-08-28T13:45:08.697Z",
+  "updatedAt": "2025-08-29T08:06:38.000Z",
+  "id": "o1CoGhGfrW0yuK1d",
+  "name": "Crime Article Finder",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec96926a-1cb3-4aba-b4d4-05a8867cd2c5",
+              "name": "add date",
+              "value": "={{ $json['add date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e5a37c8c-5029-42ce-8e79-35db81c3593a",
+              "name": "Gender",
+              "value": "={{ $json.Gender }}",
+              "type": "string"
+            },
+            {
+              "id": "1bffa8b5-6948-48b3-967e-ab05ae8dbd98",
+              "name": "city",
+              "value": "={{ $json.city }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        -128
+      ],
+      "id": "37a61be5-9f21-43a1-953d-369dc5945142",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      query: `${$json.date} ${$json.gender} ${$json.location} ${$json.charge} crime news site:cnn.com OR site:nytimes.com OR site:bbc.com`\n    }\n  }\n]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        528,
+        -128
+      ],
+      "id": "9593c5d5-b6e1-4d02-8c84-9947d879b8da",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "query": "={{ $json.query }}",
+        "options": {
+          "topic": "news"
+        }
+      },
+      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "typeVersion": 1,
+      "position": [
+        688,
+        -128
+      ],
+      "id": "bd15e21f-ac32-4f56-856d-3c0d81e7cec6",
+      "name": "Search",
+      "credentials": {
+        "tavilyApi": {
+          "id": "N4KyQy7Ea3oWZV7c",
+          "name": "Tavily account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=",
+        "text": "=",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        864,
+        -128
+      ],
+      "id": "f4a2ecde-eb69-4e02-bf23-27169c43562b",
+      "name": "Send a text message",
+      "webhookId": "ccacf273-6df5-4a6a-9c84-7de89a5f62df",
+      "credentials": {
+        "telegramApi": {
+          "id": "lodIyBtxAtORSIXq",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Crime-Related News Articles scraper",
+        "formDescription": "give all  details",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "add date",
+              "fieldType": "date",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "city",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Gender",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Male"
+                  },
+                  {
+                    "option": "Female"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -128
+      ],
+      "id": "f6a1c5e3-868a-4f32-81ab-26deed57a3a2",
+      "name": "On form submission",
+      "webhookId": "65645bda-f29e-4fc8-8cd8-eb313fd6162c"
+    },
+    {
+      "parameters": {
+        "height": 336,
+        "width": 976,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        144,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "268820f1-33c7-4250-8a6c-427e98d471ec",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "75303695-e6df-42f8-ba55-e9418cb630ec",
+  "triggerCount": 0,
+  "tags": []
+}
