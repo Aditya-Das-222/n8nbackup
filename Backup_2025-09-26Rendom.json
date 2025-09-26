@@ -1,0 +1,21 @@
+{
+  "createdAt": "2025-09-07T15:58:27.072Z",
+  "updatedAt": "2025-09-08T05:21:29.000Z",
+  "id": "WI3JXLCF65VpFlzq",
+  "name": "Rendom",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "1d6a07c4-cd32-4425-a369-c7dd7c330425",
+  "triggerCount": 0,
+  "tags": []
+}
