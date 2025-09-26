@@ -1,0 +1,19 @@
+{
+  "createdAt": "2025-08-17T19:43:01.741Z",
+  "updatedAt": "2025-08-17T19:43:01.741Z",
+  "id": "dKgbHGV4kr4ytaTR",
+  "name": "Sales System",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "9404c746-ea31-426a-a320-8fff1672d9f6",
+  "triggerCount": 0,
+  "tags": []
+}
