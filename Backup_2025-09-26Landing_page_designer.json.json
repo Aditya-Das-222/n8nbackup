@@ -1,0 +1,227 @@
+{
+  "createdAt": "2025-08-27T13:11:30.839Z",
+  "updatedAt": "2025-09-08T14:13:03.000Z",
+  "id": "ggCLoO1WRSkrsikt",
+  "name": "Landing_page_designer.json",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "description"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        48
+      ],
+      "id": "a53f1ea7-b43a-40a5-b9b8-59c4408441b3",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini-2025-04-14",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI-2025-04-14"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.description }}"
+            },
+            {
+              "content": "You are a principal UI/UX visual designer.\n\nInput: siteName, mood (“trustworthy”, “energetic”, “luxurious”, “friendly”, “techy”), ctaLabel, brandPalette (optional), featureVisual (“dashboard screenshot”, “app mockup”, “abstract wave”), gridPreference (“12-col”, “16-col”).\nTask: Emit one hero-section mockup prompt (≤ 110 words).\nInject advanced style rules:\n• Choose design paradigm based on mood:\n– Glassmorphism for techy/trustworthy\n– Gradient-rich Swiss for energetic\n– Deep-shadow claymorphism for friendly\n– Luxurious serif + dark-mode gold accents for premium\n• Generate WCAG-AA palette (use brandPalette or derive).\n• Layout: centred headline (min 48 px), subhead (28 px), CTA (bold, high-contrast), hero image at 55 % viewport height, generous 80 px top padding.\n• Typography pairing: modern grotesk heading + humanist body (or suitable to mood).\n• Micro-interactions: subtle 4 px glow on CTA, 2 % parallax on featureVisual.\n• Grid: apply gridPreference; full-bleed background.\n• Render 16:9, 4-K.\n• Negative prompt:\n--no tiny fonts, cluttered UI, generic stock models, low contrast, skeuomorphic bevels, watermark.\n\n\nCraft only the prompt and nothing else\n\nImportant:\nYour prompt output should be in plain text and not marked with PROMPT at the beginning. just output raw text. please note that this is going inside of a json body so avoid any punctuation that could mess it up like \"'('\"",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        512,
+        48
+      ],
+      "id": "f248ebb6-3004-4e81-a2ac-0debddfe0368",
+      "name": "Prompt gen"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "<api key>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"model\": \"gpt-image-1\",\n    \"prompt\": \"{{ $json.message.content }}\",\n    \"n\": 1,\n    \"size\": \"1024x1024\"\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        848,
+        48
+      ],
+      "id": "5dfba0b9-a969-42ba-b5e9-c9859bd8775b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data[0].b64_json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        48
+      ],
+      "id": "b258faa7-dbc7-46e6-bbbb-9445e58cfddd",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "name": "Image",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1XuoFVb96OH2FthcHKxxKy7MMm01qKHEG",
+          "mode": "list",
+          "cachedResultName": "Ai Resources",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1XuoFVb96OH2FthcHKxxKy7MMm01qKHEG"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        48
+      ],
+      "id": "a9126758-79ac-41a5-af76-c074fae47c9e",
+      "name": "Google Drive"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "da638934-4e21-4bf8-96ff-20da940a3f52",
+              "name": "webViewLink",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1392,
+        48
+      ],
+      "id": "1be1104f-5b7a-4c8b-bd58-95963fa7351d",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Prompt gen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt gen": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "b37e67d8-43d2-435a-b25d-12d09bbaecaa",
+  "triggerCount": 0,
+  "tags": [
+    {
+      "createdAt": "2025-08-27T13:11:01.943Z",
+      "updatedAt": "2025-08-27T13:11:01.943Z",
+      "id": "Bp6PWiOVf8YhVtLP",
+      "name": "Graphic design"
+    }
+  ]
+}
