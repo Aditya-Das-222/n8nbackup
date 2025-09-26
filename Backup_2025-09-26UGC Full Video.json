@@ -1,0 +1,21 @@
+{
+  "createdAt": "2025-08-31T16:15:02.922Z",
+  "updatedAt": "2025-09-08T16:31:37.000Z",
+  "id": "98ZJyCyGxXlXzVaY",
+  "name": "UGC Full Video",
+  "active": false,
+  "isArchived": false,
+  "nodes": [],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "469e06d4-87ad-4a4b-ba0c-4456d13bbafe",
+  "triggerCount": 0,
+  "tags": []
+}
